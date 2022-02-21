@@ -1,16 +1,8 @@
 ﻿#include <iostream>
-#include <bitset>
+#include <array>
 
-#include "Entity.h"
-#include "Components.h"
+#include "ComponentManager.h"
 
 int main()
 {
-	EntityManager manager;
-
-	auto& entity = manager.addEntity();
-	entity.addComponent<TransformComponent>("test");
-
-	std::cout << entity.hasComponent<TransformComponent>() << std::endl;
-
 }

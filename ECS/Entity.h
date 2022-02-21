@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <iostream>
 #include <vector>
 #include <array>
@@ -25,6 +26,7 @@ public:
 	virtual ~Component() {}
 };
 
+template
 
 class Entity {
 private:

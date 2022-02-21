@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Entity.h"
+#include "ComponentManager.h"
 
 class TransformComponent : public Component {
 private:
