@@ -4,23 +4,21 @@
 #include "ComponentManager.h"
 
 int main() {
+	EntityManager entityManger;
+	Entity e1 = entityManger.create();
+	Entity e2 = entityManger.create();
 
-	EntityManager Emanager;
-	ComponentManager<TrasformComponent> Tmanager;
-	ComponentManager<ColliderComponent> Cmanager;
+	Scene scene;
+	scene.addComponent<TrasformComponent>(e1);
+	std::cout << "----------" << std::endl;
+	scene.addComponent<TrasformComponent>(e2);
+	std::cout << "----------" << std::endl;
+	scene.addComponent<ColliderComponent>(e1);
 
-	auto E1 = Emanager.create();
-	auto E2 = Emanager.create();
+	std::cout << "----------" << std::endl;
+	scene.getComponent<TrasformComponent>(e1).xpos = 10;
 
-	Tmanager.addComponent(E1);
-	Tmanager.addComponent(E2);
+	std::cout << scene.getComponent<TrasformComponent>(e1).xpos << std::endl;
+	std::cout << scene.getComponent<TrasformComponent>(e2).xpos << std::endl;
 
-	std::cout << "--------------" << std::endl;
-
-	Cmanager.addComponent(E2);
-
-	std::cout << "--------------" << std::endl;
-
-	Cmanager.test();
-	Tmanager.test();
 }
