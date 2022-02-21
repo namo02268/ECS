@@ -1,25 +1,24 @@
 #pragma once
 
-#include "Entity.h"
+#include "Component.h"
 
-class TransformComponent : public Component {
-private:
-	int xpos;
-	int ypos;
+class TrasformComponent : public Component {
+public:
+	int xpos = 0;
+	int ypos = 0;
 
 public:
-	int x() { return xpos; }
-	int y() { return ypos; }
-
-	TransformComponent(std::string txt) { std::cout << txt << std::endl; }
-
 	void init() override {
-		xpos = 10;
-		ypos = 10;
+		std::cout << "init Transfrom" << std::endl;
 	}
+};
 
-	void setPos(int x, int y) {
-		xpos = x;
-		ypos = y;
+class ColliderComponent : public Component {
+public:
+	bool collider = true;
+
+public:
+	void init() override {
+		std::cout << "init Collider" << std::endl;
 	}
 };

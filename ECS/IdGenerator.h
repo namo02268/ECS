@@ -1,7 +1,7 @@
 #pragma once
 
-using EntityID = size_t;
-using ComponentTypeID = size_t;
+using EntityID = unsigned int;
+using ComponentTypeID = unsigned int;
 
 
 inline EntityID getEntityID() {
