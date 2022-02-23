@@ -1,8 +1,6 @@
 #pragma once
 
-using EntityID = unsigned int;
-using ComponentTypeID = unsigned int;
-
+#include "ECS_def.h"
 
 inline EntityID getEntityID() {
 	static EntityID entityID = 0;

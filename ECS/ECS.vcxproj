@@ -145,11 +145,14 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="Components.h" />
+    <ClInclude Include="ECS_def.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityHandle.h" />
     <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="EntityMap.h" />
     <ClInclude Include="IdGenerator.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="System.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

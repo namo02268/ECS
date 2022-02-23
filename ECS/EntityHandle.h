@@ -1,5 +1,7 @@
 #pragma once
 
+/*
+#include "EntityManager.h"
 #include "Scene.h"
 
 class Scene;
@@ -16,7 +18,8 @@ public:
 	}
 
 	template<typename ComponentType>
-	void addComponent() {
-		scene->addComponent(entity);
+	void addComponentT() {
+		scene->addComponent<ComponentType>(entity);
 	}
 };
+*/

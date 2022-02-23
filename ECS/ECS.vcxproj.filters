@@ -47,5 +47,14 @@
     <ClInclude Include="EntityHandle.h">
       <Filter>ECS</Filter>
     </ClInclude>
+    <ClInclude Include="EntityMap.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS_def.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -5,5 +5,5 @@
 
 class EntityManager {
 public:
-	Entity createEntity() { return getEntityID(); }
+	Entity createEntity() { return Entity(getEntityID()); }
 };
