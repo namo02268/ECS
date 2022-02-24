@@ -24,10 +24,4 @@ public:
 		instanceToEntity[i] = e.GetID();
 	}
 	void remove(Entity& e) { entityToInstance.erase(e.GetID()); }
-
-	void print() {
-		for (auto& itr : entityToInstance) {
-			std::cout << itr.first << " : " << itr.second << std::endl;
-		}
-	}
 };

@@ -1,11 +1,11 @@
 #pragma once
 
 #include <iostream>
-#include <bitset>
 #include <vector>
 #include "ComponentManager.h"
 #include "EntityManager.h"
 #include "ECS_def.h"
+#include "System.h"
 
 class Scene {
 private:
@@ -14,9 +14,11 @@ private:
 	// entity mask
 	std::map<Entity, std::bitset<MAX_COMPONENTS_FAMILY>> entityMasks;
 	// bit array of component managers ID
-	std::bitset<MAX_COMPONENTS_FAMILY> m_componentFamily;
+	ComponentFamily m_componentFamily;
 	// array of component managers
 	std::vector<std::unique_ptr<BaseComponentManager>> m_componentManagers;
+	// systems
+	std::vector<std::unique_ptr<System>> systems;
 
 public:
 	// constructor
@@ -26,10 +28,22 @@ public:
 	// create the entity
 	Entity createEntity() { return m_entityManager->createEntity(); }
 
+	void addSystem(std::unique_ptr<System> system) {
+		system->parentScene = this;
+		systems.push_back(std::move(system));
+	}
+
+	void init() {
+		for (auto& system : systems)
+			system->init();
+	}
+
 	// TODO : [Add] addComponentFamily function
 	template<typename ComponentType>
-	void addComponent(const Entity& e) {
+	void addComponent(Entity& e) {
 		auto family = getComponentTypeID<ComponentType>();
+		e.m_componentMap[family] = true;
+
 		// if the component manager already exists
 		if (m_componentFamily[family]) {
 			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).addComponent(e);
@@ -40,12 +54,16 @@ public:
 			m_componentManagers.emplace_back(std::move(m));
 			m_componentFamily[family] = true;
 		}
+
+		updateComponentMap(e, family);
 	}
 
 	template<typename ComponentType>
-	void removeComponent(const Entity& e) {
+	void removeComponent(Entity& e) {
 		auto family = getComponentTypeID<ComponentType>();
+		e.m_componentMap[family] = false;
 		static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).removeComponent(e);
+		updateComponentMap(e, family);
 	}
 
 	// TODO : [Add] error handling
@@ -55,5 +73,20 @@ public:
 		return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
 	}
 
-	// TODO : [Add] remove component method
+	void updateComponentMap(Entity& e, ComponentTypeID family) {
+		for (auto& system : systems) {
+			auto componentMap = e.m_componentMap;
+			auto requiredComponent = system->m_requiredComponent;
+			if (requiredComponent[family]) {
+				auto andbit = requiredComponent & componentMap;
+				if (andbit == system->m_requiredComponent) {
+					system->addEntity(e);
+				}
+				else {
+					system->removeEntity(e);
+				}
+
+			}
+		}
+	}
 };

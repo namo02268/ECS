@@ -14,3 +14,8 @@ class ColliderComponent : public Component {
 public:
 	bool collider = true;
 };
+
+class RendererComponent : public Component {
+public:
+	int test = 1;
+};

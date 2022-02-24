@@ -25,7 +25,7 @@ public:
 	}
 
 	ComponentType& getComponent(Entity e) {
-		ComponentInstance instance = entityMap.getEntity(e);
+		ComponentInstance instance = entityMap.getInstance(e);
 		return *m_componentArray[instance];
 	}
 

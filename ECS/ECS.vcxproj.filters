@@ -56,5 +56,8 @@
     <ClInclude Include="ECS_def.h">
       <Filter>ECS</Filter>
     </ClInclude>
+    <ClInclude Include="Systems.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
