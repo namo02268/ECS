@@ -16,11 +16,10 @@ int main() {
 	auto e2 = scene.createEntity();
 
 	scene.addComponent<RendererComponent>(e1);
-	scene.addComponent<TransformComponent>(e1);
+	scene.addComponent<TransformComponent>(e1, 10);
+	scene.addComponent<ColliderComponent>(e1);
 	scene.addComponent<RendererComponent>(e2);
-	scene.addComponent<TransformComponent>(e2);
-
-	scene.getComponent<TransformComponent>(e1).xpos = 10;
+	scene.addComponent<TransformComponent>(e2, 20);
 
 	scene.init();
 }

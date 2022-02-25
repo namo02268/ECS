@@ -5,7 +5,7 @@
 
 class TransformComponent : public Component {
 public:
-	TransformComponent() { std::cout << "Transform" << std::endl; }
+	TransformComponent(int xpos) : xpos(xpos) {}
 	int xpos = 0;
 	int ypos = 0;
 };

@@ -39,18 +39,18 @@ public:
 	}
 
 	// TODO : [Add] addComponentFamily function
-	template<typename ComponentType>
-	void addComponent(Entity& e) {
+	template<typename ComponentType, typename... TArgs>
+	void addComponent(Entity& e, TArgs&&... mArgs) {
 		auto family = getComponentTypeID<ComponentType>();
 		e.m_componentMap[family] = true;
 
 		// if the component manager already exists
 		if (m_componentFamily[family]) {
-			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).addComponent(e);
+			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).addComponent(e, std::forward<TArgs>(mArgs)...);
 		}
 		else {
 			auto m = std::make_unique<ComponentManager<ComponentType>>();
-			m->addComponent(e);
+			m->addComponent(e, std::forward<TArgs>(mArgs)...);
 			m_componentManagers.emplace_back(std::move(m));
 			m_componentFamily[family] = true;
 		}
