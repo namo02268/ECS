@@ -14,12 +14,14 @@ int main() {
 
 	auto e1 = scene.createEntity();
 	auto e2 = scene.createEntity();
+	auto e3 = scene.createEntity();
 
 	scene.addComponent<RendererComponent>(e1);
-	scene.addComponent<TransformComponent>(e1, 10);
-	scene.addComponent<ColliderComponent>(e1);
+	scene.addComponent<TransformComponent>(e1, 10, 10);
 	scene.addComponent<RendererComponent>(e2);
-	scene.addComponent<TransformComponent>(e2, 20);
+	scene.addComponent<TransformComponent>(e2, 200, 20);
+	scene.addComponent<RendererComponent>(e3);
+	scene.addComponent<TransformComponent>(e3, 300, 30);
 
 	scene.init();
 }

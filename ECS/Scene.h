@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
 #include "ComponentManager.h"
 #include "EntityManager.h"
 #include "ECS_def.h"
@@ -16,7 +15,7 @@ private:
 	// bit array of component managers ID
 	ComponentFamily m_componentFamily;
 	// array of component managers
-	std::vector<std::unique_ptr<BaseComponentManager>> m_componentManagers;
+	std::array<std::unique_ptr<BaseComponentManager>, MAX_COMPONENTS_FAMILY> m_componentManagers;
 	// systems
 	std::vector<std::unique_ptr<System>> systems;
 
@@ -51,7 +50,7 @@ public:
 		else {
 			auto m = std::make_unique<ComponentManager<ComponentType>>();
 			m->addComponent(e, std::forward<TArgs>(mArgs)...);
-			m_componentManagers.emplace_back(std::move(m));
+			m_componentManagers[family] = (std::move(m));
 			m_componentFamily[family] = true;
 		}
 
@@ -68,7 +67,7 @@ public:
 
 	// TODO : [Add] error handling
 	template<typename ComponentType>
-	ComponentType& getComponent(const Entity& e) {
+	ComponentType& getComponent(Entity& e) {
 		auto family = getComponentTypeID<ComponentType>();
 		return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
 	}

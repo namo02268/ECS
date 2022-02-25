@@ -8,14 +8,18 @@ public:
 	TransformSystem() {
 		auto family = getComponentTypeID<TransformComponent>();
 		m_requiredComponent[family] = true;
+		family = getComponentTypeID<ColliderComponent>();
+		m_requiredComponent[family] = true;
 		family = getComponentTypeID<RendererComponent>();
 		m_requiredComponent[family] = true;
 	}
 
 	void init() override {
 		for (auto& e : m_entityArray) {
-			auto tansformComponent = parentScene->getComponent<TransformComponent>(e);
-			std::cout << tansformComponent.xpos << std::endl;
+			auto& tansformComponent = parentScene->getComponent<TransformComponent>(e);
+			std::cout << "id : " << e.GetID() << std::endl;
+			std::cout << "xpos : " << tansformComponent.xpos << std::endl;
+			std::cout << "ypos : " << tansformComponent.ypos << std::endl;
 		}
 	}
 

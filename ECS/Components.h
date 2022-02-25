@@ -5,9 +5,14 @@
 
 class TransformComponent : public Component {
 public:
-	TransformComponent(int xpos) : xpos(xpos) {}
-	int xpos = 0;
-	int ypos = 0;
+	float xpos = 5;
+	float ypos = 5;
+	TransformComponent(int xpos, int ypos) {
+		std::cout << "const : " << xpos << std::endl;
+		this->xpos = xpos;
+		this->ypos = ypos;
+		std::cout << this->xpos << std::endl;
+	}
 };
 
 class ColliderComponent : public Component {
