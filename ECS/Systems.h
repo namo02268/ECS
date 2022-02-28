@@ -8,8 +8,6 @@ public:
 	TransformSystem() {
 		auto family = getComponentTypeID<TransformComponent>();
 		m_requiredComponent[family] = true;
-		family = getComponentTypeID<ColliderComponent>();
-		m_requiredComponent[family] = true;
 		family = getComponentTypeID<RendererComponent>();
 		m_requiredComponent[family] = true;
 	}
