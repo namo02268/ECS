@@ -21,11 +21,18 @@ private:
 
 public:
 	// constructor
-	explicit Scene(std::unique_ptr<EntityManager> entityManager) 
+	explicit Scene(std::unique_ptr<EntityManager> entityManager)
 		: m_entityManager(std::move(entityManager)) {};
 
 	// create the entity
 	Entity createEntity() { return m_entityManager->createEntity(); }
+
+	void destroyEntity(Entity e) {
+		for (auto& system : systems) {
+			system->removeEntity(e);
+		}
+		m_entityManager->destroyEnitity(e);
+	}
 
 	void addSystem(std::unique_ptr<System> system) {
 		system->parentScene = this;
@@ -35,6 +42,16 @@ public:
 	void init() {
 		for (auto& system : systems)
 			system->init();
+	}
+
+	void update() {
+		for (auto& system : systems)
+			system->update();
+	}
+
+	void draw() {
+		for (auto& system : systems)
+			system->draw();
 	}
 
 	// TODO : [Add] addComponentFamily function
