@@ -23,6 +23,8 @@ int main() {
 	scene.addComponent<RendererComponent>(e3);
 	scene.addComponent<TransformComponent>(e3, 300, 30);
 
+
+
 	scene.init();
 }
 
