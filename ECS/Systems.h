@@ -2,6 +2,7 @@
 
 #include "Scene.h"
 #include "System.h"
+#include "EntityHandle.h"
 
 class TransformSystem : public System {
 public:
@@ -25,6 +26,42 @@ public:
 
 	}
 
+	void draw() override {
+
+	}
+};
+
+class CollisionEvent : public Event {
+public:
+	CollisionEvent() { std::cout << "Called" << std::endl; }
+	~CollisionEvent() { std::cout << "Terminate" << std::endl; }
+};
+
+class CombatSystem : public System {
+public:
+	void init() override {
+		eventHandler->subscribe(this, &CombatSystem::onCollisionEvent);
+	}
+	void update() override {
+
+	}
+
+	void draw() override {
+
+	}
+	void onCollisionEvent(CollisionEvent* collision) {
+		std::cout << "Recieved" << std::endl;
+	}
+};
+
+class PhysicsSystem : public System {
+public:
+	void init() override {
+	}
+	void update() override {
+		CollisionEvent event;
+		eventHandler->publish(&event);
+	}
 	void draw() override {
 
 	}

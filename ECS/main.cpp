@@ -6,20 +6,6 @@
 #include "Systems.h"
 #include "Event.h"
 
-class CollisionEvent : public Event {
-	CollisionEvent(Entity a, Entity b) : entityA{ a }, entityB{ b } {}
-	Entity entityA;
-	Entity entityB;
-};
-
-class CombatSystem : public System {
-public:
-	void init() {
-		eventHandler->subscribe(this, &CombatSystem::onCollisionEvent);
-	}
-	void onCollisionEvent(CollisionEvent* collision) {
-	}
-};
 
 int main() {
 	auto entityManager = std::make_unique<EntityManager>();
@@ -28,6 +14,11 @@ int main() {
 
 	auto tSystem = std::make_unique<TransformSystem>();
 	scene.addSystem(std::move(tSystem));
+
+	auto combatSystem = std::make_unique<CombatSystem>();
+	scene.addSystem(std::move(combatSystem));
+	auto physicsSystem = std::make_unique<PhysicsSystem>();
+	scene.addSystem(std::move(physicsSystem));
 
 	auto e1 = scene.createEntity();
 	auto e2 = scene.createEntity();
@@ -43,5 +34,6 @@ int main() {
 
 
 	scene.init();
+	scene.update();
 }
 

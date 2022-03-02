@@ -37,27 +37,25 @@ public:
 	MemberFunctionHandler(T* instance, MemberFunction memberFunction) 
 		: instance{instance}, memberFunction(memberFunction) {}
 
-	void Call(Event* event) {
+	void call(Event* event) {
 		(instance->*memberFunction)(static_cast<EventType*>(event));
 	}
 };
 
-using HandlerList = std::list<HandlerFunctionBase*>;
+using HandlerList = std::list<std::unique_ptr<HandlerFunctionBase>>;
 
 class EventHandler {
 private:
-	std::map<EventTypeID, HandlerList*> subscribers;
+	std::map<EventTypeID, std::unique_ptr<HandlerList>> subscribers;
 
 public:
 	template<typename EventType>
 	void publish(EventType* event) {
-		auto handlers = subscribers[getEventTypeID<EventType>()];
-
-		if (handlers == nullptr) {
+		if (subscribers[getEventTypeID<EventType>()] == nullptr) {
 			return;
 		}
 
-		for (auto& handler : *handlers) {
+		for (auto& handler : *subscribers[getEventTypeID<EventType>()]) {
 			if (handler != nullptr)
 				handler->exec(event);
 		}
@@ -65,13 +63,11 @@ public:
 
 	template<typename T, typename EventType>
 	void subscribe(T* instance, void (T::*memberFunction)(EventType*)) {
-		auto handlers = subscribers[getEventTypeID<EventType>()];
-
-		if (handlers == nullptr) {
-			subscribers[getEventTypeID<EventType>()] = new HandlerList();
+		if (subscribers[getEventTypeID<EventType>()] == nullptr) {
+			subscribers[getEventTypeID<EventType>()] = std::make_unique<HandlerList>();
 		}
 
-		handlers->push_back(new MemberFunctionHandler<T, EventType>(instance, memberFunction));
+		subscribers[getEventTypeID<EventType>()]->push_back(std::make_unique<MemberFunctionHandler<T, EventType>>(instance, memberFunction));
 	}
 };
 
