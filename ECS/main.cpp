@@ -4,7 +4,7 @@
 #include "Scene.h"
 #include "Components.h"
 #include "Systems.h"
-#include "Event.h"
+#include "EventHandler.h"
 
 
 int main() {

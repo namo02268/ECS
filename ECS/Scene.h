@@ -5,7 +5,7 @@
 #include "EntityManager.h"
 #include "ECS_def.h"
 #include "System.h"
-#include "Event.h"
+#include "EventHandler.h"
 
 class Scene {
 private:
@@ -18,18 +18,16 @@ private:
 	// array of component managers
 	std::array<std::unique_ptr<BaseComponentManager>, MAX_COMPONENTS_FAMILY> m_componentManagers;
 	// systems
-	std::vector<std::unique_ptr<System>> systems;
+	std::vector<std::unique_ptr<System>> m_systems;
 
 public:
-	// constructor
 	explicit Scene(std::unique_ptr<EntityManager> entityManager, std::shared_ptr<EventHandler> eventHandler)
 		: m_entityManager(std::move(entityManager)), m_eventHandler(eventHandler) {};
 
-	// create the entity
 	Entity createEntity() { return m_entityManager->createEntity(); }
 
 	void destroyEntity(Entity e) {
-		for (auto& system : systems) {
+		for (auto& system : m_systems) {
 			system->removeEntity(e);
 		}
 		m_entityManager->destroyEnitity(e);
@@ -38,25 +36,24 @@ public:
 	void addSystem(std::unique_ptr<System> system) {
 		system->parentScene = this;
 		system->eventHandler = m_eventHandler;
-		systems.push_back(std::move(system));
+		m_systems.push_back(std::move(system));
 	}
 
 	void init() {
-		for (auto& system : systems)
+		for (auto& system : m_systems)
 			system->init();
 	}
 
 	void update() {
-		for (auto& system : systems)
+		for (auto& system : m_systems)
 			system->update();
 	}
 
 	void draw() {
-		for (auto& system : systems)
+		for (auto& system : m_systems)
 			system->draw();
 	}
 
-	// TODO : [Add] addComponentFamily function
 	template<typename ComponentType, typename... TArgs>
 	void addComponent(Entity& e, TArgs&&... mArgs) {
 		auto family = getComponentTypeID<ComponentType>();
@@ -88,7 +85,7 @@ public:
 	}
 
 	void updateComponentMap(Entity& e, ComponentTypeID family) {
-		for (auto& system : systems) {
+		for (auto& system : m_systems) {
 			auto componentMap = e.m_componentMap;
 			auto requiredComponent = system->m_requiredComponent;
 			if (requiredComponent[family]) {
