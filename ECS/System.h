@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include "ECS_def.h"
 #include "Components.h"
+#include "Event.h"
 
 class Scene;
 
@@ -14,6 +15,7 @@ protected:
 
 public:
 	Scene* parentScene;
+	std::shared_ptr<EventHandler> eventHandler;
 	ComponentFamily m_requiredComponent;
 
 public:

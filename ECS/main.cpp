@@ -4,10 +4,27 @@
 #include "Scene.h"
 #include "Components.h"
 #include "Systems.h"
+#include "Event.h"
+
+class CollisionEvent : public Event {
+	CollisionEvent(Entity a, Entity b) : entityA{ a }, entityB{ b } {}
+	Entity entityA;
+	Entity entityB;
+};
+
+class CombatSystem : public System {
+public:
+	void init() {
+		eventHandler->subscribe(this, &CombatSystem::onCollisionEvent);
+	}
+	void onCollisionEvent(CollisionEvent* collision) {
+	}
+};
 
 int main() {
 	auto entityManager = std::make_unique<EntityManager>();
-	Scene scene(std::move(entityManager));
+	auto eventHandler = std::make_shared<EventHandler>();
+	Scene scene(std::move(entityManager), eventHandler);
 
 	auto tSystem = std::make_unique<TransformSystem>();
 	scene.addSystem(std::move(tSystem));

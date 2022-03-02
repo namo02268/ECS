@@ -150,6 +150,7 @@
     <ClInclude Include="EntityHandle.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="EntityMap.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="IdGenerator.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="System.h" />
