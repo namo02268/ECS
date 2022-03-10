@@ -17,5 +17,6 @@ public:
 		ss << "Entity " << std::setfill('0') << std::right << std::setw(4) << id;
 		name = ss.str();
 	}
+	~Entity() = default;
 	EntityID GetID() { return m_id; }
 };

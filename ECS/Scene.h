@@ -22,8 +22,11 @@ private:
 	std::vector<std::unique_ptr<System>> m_systems;
 
 public:
-	explicit Scene(std::unique_ptr<EntityManager> entityManager, std::shared_ptr<EventHandler> eventHandler)
+	Scene(std::unique_ptr<EntityManager> entityManager, std::shared_ptr<EventHandler> eventHandler)
 		: m_entityManager(std::move(entityManager)), m_eventHandler(eventHandler) {};
+	Scene(const Scene&) = delete;
+	Scene& operator=(const Scene&) = delete;
+	~Scene() = default;
 
 	//---------------------------------------------Entity---------------------------------------------//
 	Entity createEntity() { return m_entityManager->createEntity(); }
@@ -98,6 +101,7 @@ public:
 		return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
 	}
 
+private:
 	void updateComponentMap(Entity& e, ComponentTypeID family) {
 		for (const auto& system : m_systems) {
 			auto componentMap = e.attachedComponent;
