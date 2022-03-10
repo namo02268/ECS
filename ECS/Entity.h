@@ -6,7 +6,7 @@ class Entity {
 private:
 	EntityID m_id;
 public:
-	ComponentFamily m_componentMap;
+	ComponentFamily attachedComponent;
 
 public:
 	Entity(EntityID id) : m_id(id) {}

@@ -15,14 +15,14 @@ public:
 
 	void init() override {
 		for (auto& e : m_entityArray) {
-			auto& tansformComponent = parentScene->getComponent<TransformComponent>(e);
+			auto& tansformComponent = m_parentScene->getComponent<TransformComponent>(e);
 			std::cout << "id : " << e.GetID() << std::endl;
 			std::cout << "xpos : " << tansformComponent.xpos << std::endl;
 			std::cout << "ypos : " << tansformComponent.ypos << std::endl;
 		}
 	}
 
-	void update() override {
+	void update(float dt) override {
 
 	}
 
@@ -40,9 +40,9 @@ public:
 class CombatSystem : public System {
 public:
 	void init() override {
-		eventHandler->subscribe(this, &CombatSystem::onCollisionEvent);
+		m_eventHandler->subscribe(this, &CombatSystem::onCollisionEvent);
 	}
-	void update() override {
+	void update(float dt) override {
 
 	}
 
@@ -58,9 +58,9 @@ class PhysicsSystem : public System {
 public:
 	void init() override {
 	}
-	void update() override {
+	void update(float dt) override {
 		CollisionEvent event;
-		eventHandler->publish(&event);
+		m_eventHandler->publish(&event);
 	}
 	void draw() override {
 

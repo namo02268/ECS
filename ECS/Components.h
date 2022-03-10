@@ -8,10 +8,10 @@ public:
 	float xpos = 5;
 	float ypos = 5;
 	TransformComponent(int xpos, int ypos) {
-		std::cout << "const : " << xpos << std::endl;
+		std::cout << "Transform" << std::endl;
 		this->xpos = xpos;
 		this->ypos = ypos;
-		std::cout << this->xpos << std::endl;
+//		std::cout << this->xpos << std::endl;
 	}
 };
 

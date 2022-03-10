@@ -30,10 +30,10 @@ int main() {
 	scene.addComponent<TransformComponent>(e2, 200, 20);
 	scene.addComponent<RendererComponent>(e3);
 	scene.addComponent<TransformComponent>(e3, 300, 30);
-
-
+	scene.addComponent<TransformComponent>(e3, 300, 30);
+	scene.removeComponent<ColliderComponent>(e3);
 
 	scene.init();
-	scene.update();
+	scene.update(1.0);
 }
 

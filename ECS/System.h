@@ -14,8 +14,8 @@ protected:
 	std::vector<Entity> m_entityArray;
 
 public:
-	Scene* parentScene;
-	std::shared_ptr<EventHandler> eventHandler;
+	Scene* m_parentScene;
+	std::shared_ptr<EventHandler> m_eventHandler;
 	ComponentFamily m_requiredComponent;
 
 public:
@@ -23,7 +23,7 @@ public:
 
 	virtual void init() = 0;
 
-	virtual void update() = 0;
+	virtual void update(float dt) = 0;
 
 	virtual void draw() = 0;
 
