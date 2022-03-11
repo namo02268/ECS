@@ -9,8 +9,8 @@
 
 int main() {
 	auto entityManager = std::make_unique<EntityManager>();
-	auto eventHandler = std::make_shared<EventHandler>();
-	Scene scene(std::move(entityManager), eventHandler);
+	auto eventHandler = std::make_unique<EventHandler>();
+	Scene scene(std::move(entityManager), std::move(eventHandler));
 
 	auto tSystem = std::make_unique<TransformSystem>();
 	scene.addSystem(std::move(tSystem));
