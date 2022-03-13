@@ -31,7 +31,7 @@ public:
 	}
 };
 
-class CollisionEvent : public Event {
+struct CollisionEvent : public Event {
 public:
 	CollisionEvent() { std::cout << "Called" << std::endl; }
 	~CollisionEvent() { std::cout << "Terminate" << std::endl; }
