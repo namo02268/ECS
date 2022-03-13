@@ -96,9 +96,15 @@ public:
 
 	// TODO : [Add] error handling
 	template<typename ComponentType>
-	ComponentType& getComponent(Entity& e) {
+	ComponentType* getComponent(Entity& e) {
 		auto family = getComponentTypeID<ComponentType>();
-		return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
+		if (e.attachedComponent[family]) {
+			return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
+		}
+		else {
+			std::cout << typeid(ComponentType).name() << " does not exist! Entity ID:" << e.GetID() << std::endl;
+			return nullptr;
+		}
 	}
 
 private:
