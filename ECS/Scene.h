@@ -14,6 +14,8 @@ private:
 	std::unique_ptr<EntityManager> m_entityManager;
 	// event handler
 	std::unique_ptr<EventHandler> m_eventHandler;
+	// ComponentMask
+	std::unordered_map<EntityID, ComponentFamily> m_componentMask;
 	// bit array of component managers ID
 	ComponentFamily m_componentFamily;
 	// array of component managers
@@ -64,8 +66,9 @@ public:
 	template<typename ComponentType, typename... TArgs>
 	void addComponent(Entity& e, TArgs&&... mArgs) {
 		auto family = getComponentTypeID<ComponentType>();
-		if (!e.attachedComponent[family]) {
-			e.attachedComponent[family] = true;
+		if (!m_componentMask[e.GetID()][family]) {
+			m_componentMask[e.GetID()][family] = true;
+
 
 			// if the component manager didn't exists
 			if (!m_componentFamily[family]) {
@@ -84,8 +87,8 @@ public:
 	template<typename ComponentType>
 	void removeComponent(Entity& e) {
 		auto family = getComponentTypeID<ComponentType>();
-		if (e.attachedComponent[family]) {
-			e.attachedComponent[family] = false;
+		if (m_componentMask[e.GetID()][family]) {
+			m_componentMask[e.GetID()][family] = false;
 			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).removeComponent(e);
 			updateComponentMap(e, family);
 		}
@@ -98,7 +101,7 @@ public:
 	template<typename ComponentType>
 	ComponentType* getComponent(Entity& e) {
 		auto family = getComponentTypeID<ComponentType>();
-		if (e.attachedComponent[family]) {
+		if (m_componentMask[e.GetID()][family]) {
 			return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
 		}
 		else {
@@ -107,10 +110,14 @@ public:
 		}
 	}
 
+	ComponentFamily getComponentMask(Entity& e) {
+		return m_componentMask[e.GetID()];
+	}
+
 private:
 	void updateComponentMap(Entity& e, ComponentTypeID family) {
 		for (const auto& system : m_systems) {
-			auto componentMap = e.attachedComponent;
+			auto& componentMap = m_componentMask[e.GetID()];
 			auto requiredComponent = system->m_requiredComponent;
 			if (requiredComponent[family]) {
 				auto andbit = requiredComponent & componentMap;

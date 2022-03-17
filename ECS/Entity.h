@@ -8,7 +8,6 @@ class Entity {
 private:
 	EntityID m_id;
 public:
-	ComponentFamily attachedComponent;
 	std::string name;
 
 public:
