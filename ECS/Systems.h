@@ -16,7 +16,7 @@ public:
 	void init() override {
 		for (auto& e : m_entityArray) {
 			auto tansformComponent = m_parentScene->getComponent<TransformComponent>(e);
-			std::cout << "id : " << e << std::endl;
+			std::cout << "id : " << e.GetID() << std::endl;
 			std::cout << "xpos : " << tansformComponent->xpos << std::endl;
 			std::cout << "ypos : " << tansformComponent->ypos << std::endl;
 		}

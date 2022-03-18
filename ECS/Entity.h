@@ -7,11 +7,9 @@
 class Entity {
 private:
 	EntityID m_id;
-public:
-	std::string name;
 
 public:
 	Entity(EntityID id) : m_id(id) {}
 	~Entity() = default;
-	inline const EntityID GetID() const { return m_id; }
+	EntityID GetID() { return m_id; }
 };

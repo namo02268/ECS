@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <list>
-#include <map>
+#include <unordered_map>
 
 #include "IdGenerator.h"
 
@@ -46,7 +46,7 @@ using HandlerList = std::list<std::unique_ptr<HandlerFunctionBase>>;
 
 class EventHandler {
 private:
-	std::map<EventTypeID, std::unique_ptr<HandlerList>> m_subscribers;
+	std::unordered_map<EventTypeID, std::unique_ptr<HandlerList>> m_subscribers;
 
 public:
 	template<typename EventType>
