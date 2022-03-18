@@ -11,11 +11,7 @@ public:
 	std::string name;
 
 public:
-	Entity(EntityID id) : m_id(id) {
-		std::ostringstream ss;
-		ss << "Entity " << std::setfill('0') << std::right << std::setw(4) << id;
-		name = ss.str();
-	}
+	Entity(EntityID id) : m_id(id) {}
 	~Entity() = default;
-	EntityID GetID() { return m_id; }
+	inline const EntityID GetID() const { return m_id; }
 };
