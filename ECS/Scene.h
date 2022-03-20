@@ -13,7 +13,7 @@ private:
 	// entity manager
 	std::unique_ptr<EntityManager> m_entityManager;
 	// entity array
-	std::vector<Entity> m_sceneEntityArray;
+	std::vector<Entity> m_allEntityArray;
 	// event handler
 	std::unique_ptr<EventHandler> m_eventHandler;
 	// ComponentMask
@@ -35,15 +35,15 @@ public:
 	//---------------------------------------------Entity---------------------------------------------//
 	Entity createEntity() {
 		Entity e = createEntity();
-		m_sceneEntityArray.emplace_back(e);
+		m_allEntityArray.emplace_back(e);
 		return e;
 	}
 
 	void destroyEntity(Entity e) {
-		for (auto itr = m_sceneEntityArray.begin(); itr != m_sceneEntityArray.end(); ++itr) {
+		for (auto itr = m_allEntityArray.begin(); itr != m_allEntityArray.end(); ++itr) {
 			Entity e_itr = *itr;
 			if (e_itr.GetID() == e.GetID()) {
-				m_sceneEntityArray.erase(itr);
+				m_allEntityArray.erase(itr);
 				return;
 			}
 		}
@@ -52,6 +52,10 @@ public:
 			system->removeEntity(e);
 		}
 		m_entityManager->destroyEnitity(e);
+	}
+
+	std::vector<Entity>& getAllEntityArray() {
+		return m_allEntityArray;
 	}
 
 	//---------------------------------------------System---------------------------------------------//
