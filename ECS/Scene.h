@@ -12,6 +12,8 @@ class Scene {
 private:
 	// entity manager
 	std::unique_ptr<EntityManager> m_entityManager;
+	// entity array
+	std::vector<Entity> m_sceneEntityArray;
 	// event handler
 	std::unique_ptr<EventHandler> m_eventHandler;
 	// ComponentMask
@@ -31,9 +33,21 @@ public:
 	~Scene() = default;
 
 	//---------------------------------------------Entity---------------------------------------------//
-	Entity createEntity() { return m_entityManager->createEntity(); }
+	Entity createEntity() {
+		Entity e = createEntity();
+		m_sceneEntityArray.emplace_back(e);
+		return e;
+	}
 
 	void destroyEntity(Entity e) {
+		for (auto itr = m_sceneEntityArray.begin(); itr != m_sceneEntityArray.end(); ++itr) {
+			Entity e_itr = *itr;
+			if (e_itr.GetID() == e.GetID()) {
+				m_sceneEntityArray.erase(itr);
+				return;
+			}
+		}
+
 		for (auto& system : m_systems) {
 			system->removeEntity(e);
 		}
