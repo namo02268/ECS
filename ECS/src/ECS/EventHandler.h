@@ -2,9 +2,9 @@
 
 #include <iostream>
 #include <list>
-#include <unordered_map>
+#include <map>
 
-#include "IdGenerator.h"
+#include "ECS/IdGenerator.h"
 
 struct Event {
 public:
@@ -24,8 +24,7 @@ private:
 
 template<typename T, typename EventType>
 class MemberFunctionHandler : public HandlerFunctionBase {
-
-	typedef void (T::*MemberFunction)(EventType*);
+	typedef void (T::* MemberFunction)(EventType*);
 
 private:
 	// instance of system class
@@ -34,8 +33,8 @@ private:
 	MemberFunction m_memberFunction;
 
 public:
-	MemberFunctionHandler(T* instance, MemberFunction memberFunction) 
-		: m_instance{instance}, m_memberFunction(memberFunction) {}
+	MemberFunctionHandler(T* instance, MemberFunction memberFunction)
+		: m_instance{ instance }, m_memberFunction(memberFunction) {}
 
 	void call(Event* event) {
 		(m_instance->*m_memberFunction)(static_cast<EventType*>(event));
@@ -46,7 +45,7 @@ using HandlerList = std::list<std::unique_ptr<HandlerFunctionBase>>;
 
 class EventHandler {
 private:
-	std::unordered_map<EventTypeID, std::unique_ptr<HandlerList>> m_subscribers;
+	std::map<EventTypeID, std::unique_ptr<HandlerList>> m_subscribers;
 
 public:
 	template<typename EventType>
@@ -62,7 +61,7 @@ public:
 	}
 
 	template<typename T, typename EventType>
-	void subscribe(T* instance, void (T::*memberFunction)(EventType*)) {
+	void subscribe(T* instance, void (T::* memberFunction)(EventType*)) {
 		if (m_subscribers[getEventTypeID<EventType>()] == nullptr) {
 			m_subscribers[getEventTypeID<EventType>()] = std::make_unique<HandlerList>();
 		}
@@ -70,5 +69,3 @@ public:
 		m_subscribers[getEventTypeID<EventType>()]->push_back(std::make_unique<MemberFunctionHandler<T, EventType>>(instance, memberFunction));
 	}
 };
-
-

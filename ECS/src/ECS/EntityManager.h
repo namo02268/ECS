@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Entity.h"
-#include "IdGenerator.h"
+#include "ECS/Entity.h"
+#include "ECS/IdGenerator.h"
 
 class EntityManager {
 public:

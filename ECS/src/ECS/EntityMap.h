@@ -2,8 +2,8 @@
 #include <unordered_map>
 #include <array>
 
-#include "Entity.h"
-#include "ECS_def.h"
+#include "ECS/Entity.h"
+#include "ECS/ECS_def.h"
 
 class EntityMap {
 private:

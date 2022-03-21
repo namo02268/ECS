@@ -1,6 +1,8 @@
 #pragma once
 
-#include "ECS_def.h"
+#include <typeindex>
+#include <typeinfo>
+#include "ECS/ECS_def.h"
 
 inline EntityID getEntityID() {
 	static EntityID entityID = 0;

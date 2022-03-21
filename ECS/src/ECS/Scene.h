@@ -2,11 +2,11 @@
 
 #include <iostream>
 
-#include "ComponentManager.h"
-#include "EntityManager.h"
-#include "ECS_def.h"
-#include "System.h"
-#include "EventHandler.h"
+#include "ECS/ComponentManager.h"
+#include "ECS/EntityManager.h"
+#include "ECS/ECS_def.h"
+#include "ECS/System.h"
+#include "ECS/EventHandler.h"
 
 class Scene {
 private:
@@ -34,7 +34,7 @@ public:
 
 	//---------------------------------------------Entity---------------------------------------------//
 	Entity createEntity() {
-		Entity e = createEntity();
+		Entity e = m_entityManager->createEntity();
 		m_allEntityArray.emplace_back(e);
 		return e;
 	}

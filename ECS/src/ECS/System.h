@@ -2,9 +2,9 @@
 
 #include <vector>
 
-#include "Entity.h"
-#include "ECS_def.h"
-#include "EventHandler.h"
+#include "ECS/Entity.h"
+#include "ECS/ECS_def.h"
+#include "ECS/EventHandler.h"
 
 class Scene;
 

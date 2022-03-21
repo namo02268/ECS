@@ -1,10 +1,10 @@
 ﻿#include <iostream>
 #include <bitset>
 
-#include "Scene.h"
-#include "Components.h"
-#include "Systems.h"
-#include "EventHandler.h"
+#include "ECS/Scene.h"
+#include "Components/Components.h"
+#include "Systems/Systems.h"
+#include "ECS/EventHandler.h"
 
 
 int main() {

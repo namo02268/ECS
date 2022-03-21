@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Component.h"
-#include "EntityHandle.h"
+#include "ECS/Component.h"
+#include "ECS/EntityHandle.h"
 
 class TransformComponent : public Component {
 public:

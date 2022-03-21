@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Scene.h"
-#include "System.h"
-#include "EntityHandle.h"
+#include "ECS/Scene.h"
+#include "ECS/System.h"
+#include "ECS/EntityHandle.h"
+#include "Components/Components.h"
 
 class TransformSystem : public System {
 public:
