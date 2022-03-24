@@ -5,14 +5,14 @@ ECS (entity component system) implementation testing in C++.
 - C++ 14
 
 # Example
-## Creating an Entitie and Adding Components
+Creating an Entitie and Adding Components
 ```C++
 auto entity = scene.createEntity();
 scene.addComponent<TransformComponent>(entity);
 scene.addComponent<MaterialComponent>(entity);
 ```
 
-## Adding a System
+Adding a System
 ```C++
 auto meshRenderer = std::make_unique<MeshRenderer>();
 scene.addSystem(std::move(meshRenderer));
