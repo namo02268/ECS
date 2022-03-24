@@ -6,8 +6,12 @@
 #include "Systems/Systems.h"
 #include "ECS/EventHandler.h"
 
-
 int main() {
+	std::array<RendererComponent, 50> T1;
+	for (auto& itr : T1) {
+		std::cout << &itr << std::endl;
+	}
+
 	auto entityManager = std::make_unique<EntityManager>();
 	auto eventHandler = std::make_unique<EventHandler>();
 	Scene scene(std::move(entityManager), std::move(eventHandler));
@@ -24,14 +28,13 @@ int main() {
 	auto e2 = scene.createEntity();
 	auto e3 = scene.createEntity();
 
-	scene.addComponent<RendererComponent>(e1);
-	scene.addComponent<TransformComponent>(e1, 10, 10);
-	scene.addComponent<RendererComponent>(e2);
-	scene.addComponent<TransformComponent>(e2, 200, 20);
-	scene.addComponent<RendererComponent>(e3);
-	scene.addComponent<TransformComponent>(e3, 300, 30);
-	scene.addComponent<TransformComponent>(e3, 300, 30);
-	scene.removeComponent<ColliderComponent>(e3);
+	scene.addComponent<RendererComponent>(e1, RendererComponent());
+	scene.addComponent<TransformComponent>(e1, TransformComponent(10, 10));
+	scene.addComponent<RendererComponent>(e2, RendererComponent());
+	scene.addComponent<TransformComponent>(e2, TransformComponent(200, 20));
+	scene.addComponent<RendererComponent>(e3, RendererComponent());
+	scene.addComponent<TransformComponent>(e3, TransformComponent(300, 30));
+	scene.addComponent<TransformComponent>(e3, TransformComponent(300, 30));
 
 	scene.init();
 	scene.update(1.0);
