@@ -36,8 +36,6 @@ int main() {
 		}
 	);
 
-	std::cout << "test" << std::endl;
-
 	scene.init();
 	scene.update(1.0);
 }

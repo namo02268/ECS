@@ -26,7 +26,7 @@ public:
 	}
 
 	void addComponent(Entity& e, ComponentType&& c) {
-		m_componentArray->at(m_newInstance) = c;
+		m_componentArray->at(m_newInstance) = std::forward<ComponentType>(c);
 		m_entityMap.add(e, m_newInstance);
 
 		m_newInstance++;

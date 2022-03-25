@@ -8,8 +8,6 @@
 #include "ECS/System.h"
 #include "ECS/EventHandler.h"
 
-#include "Components/Components.h"
-
 class Scene {
 private:
 	// entity manager
@@ -83,7 +81,7 @@ public:
 	}
 
 	//---------------------------------------------Component---------------------------------------------//
-	template<typename ComponentType, typename... TArgs>
+	template<typename ComponentType>
 	void addComponent(Entity& e, ComponentType&& c) {
 		auto family = getComponentTypeID<ComponentType>();
 		if (!m_componentMask[e.GetID()][family]) {
@@ -138,8 +136,6 @@ public:
 	ComponentFamily getComponentMask(Entity& e) {
 		return m_componentMask[e.GetID()];
 	}
-
-	
 
 private:
 	void updateComponentMap(Entity& e, ComponentTypeID family) {
