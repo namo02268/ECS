@@ -31,6 +31,13 @@ int main() {
 	scene.addComponent<TransformComponent>(e3, TransformComponent(300, 30));
 	scene.addComponent<TransformComponent>(e3, TransformComponent(300, 30));
 
+	scene.iterateAll<TransformComponent>([](TransformComponent* c) {
+		c->xpos += c->ypos;
+		}
+	);
+
+	std::cout << "test" << std::endl;
+
 	scene.init();
 	scene.update(1.0);
 }

@@ -35,6 +35,7 @@ private:
 public:
 	MemberFunctionHandler(T* instance, MemberFunction memberFunction)
 		: m_instance{ instance }, m_memberFunction(memberFunction) {}
+	~MemberFunctionHandler() = default;
 
 	void call(Event* event) {
 		(m_instance->*m_memberFunction)(static_cast<EventType*>(event));
@@ -48,6 +49,8 @@ private:
 	std::map<EventTypeID, std::unique_ptr<HandlerList>> m_subscribers;
 
 public:
+	~EventHandler() = default;
+
 	template<typename EventType>
 	void publish(EventType* event) {
 		if (m_subscribers[getEventTypeID<EventType>()] == nullptr) {

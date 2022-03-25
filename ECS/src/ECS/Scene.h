@@ -8,6 +8,8 @@
 #include "ECS/System.h"
 #include "ECS/EventHandler.h"
 
+#include "Components/Components.h"
+
 class Scene {
 private:
 	// entity manager
@@ -115,7 +117,6 @@ public:
 		}
 	}
 
-	// TODO : [Add] error handling
 	template<typename ComponentType>
 	ComponentType* getComponent(Entity& e) {
 		auto family = getComponentTypeID<ComponentType>();
@@ -128,9 +129,17 @@ public:
 		}
 	}
 
+	template<typename ComponentType>
+	void iterateAll(std::function<void(ComponentType* c)> lambda) {
+		auto family = getComponentTypeID<ComponentType>();
+		static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).iterateAll(lambda);
+	}
+
 	ComponentFamily getComponentMask(Entity& e) {
 		return m_componentMask[e.GetID()];
 	}
+
+	
 
 private:
 	void updateComponentMap(Entity& e, ComponentTypeID family) {
