@@ -7,11 +7,6 @@
 #include "ECS/EventHandler.h"
 
 int main() {
-	std::array<RendererComponent, 50> T1;
-	for (auto& itr : T1) {
-		std::cout << &itr << std::endl;
-	}
-
 	auto entityManager = std::make_unique<EntityManager>();
 	auto eventHandler = std::make_unique<EventHandler>();
 	Scene scene(std::move(entityManager), std::move(eventHandler));
@@ -35,6 +30,10 @@ int main() {
 	scene.addComponent<RendererComponent>(e3, RendererComponent());
 	scene.addComponent<TransformComponent>(e3, TransformComponent(300, 30));
 	scene.addComponent<TransformComponent>(e3, TransformComponent(300, 30));
+
+	std::cout << scene.getComponent<TransformComponent>(e1) << std::endl;
+	std::cout << scene.getComponent<TransformComponent>(e2) << std::endl;
+	std::cout << scene.getComponent<TransformComponent>(e3) << std::endl;
 
 	scene.init();
 	scene.update(1.0);

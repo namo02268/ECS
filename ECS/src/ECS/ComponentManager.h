@@ -48,6 +48,7 @@ public:
 
 	ComponentType* getComponent(Entity& e) {
 		ComponentInstance instance = m_entityMap.getInstance(e);
+		std::cout << &m_componentArray->at(instance) << std::endl;
 		return &m_componentArray->at(instance);
 	}
 };
