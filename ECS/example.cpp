@@ -31,10 +31,6 @@ int main() {
 	scene.addComponent<TransformComponent>(e3, TransformComponent(300, 30));
 	scene.addComponent<TransformComponent>(e3, TransformComponent(300, 30));
 
-	std::cout << scene.getComponent<TransformComponent>(e1) << std::endl;
-	std::cout << scene.getComponent<TransformComponent>(e2) << std::endl;
-	std::cout << scene.getComponent<TransformComponent>(e3) << std::endl;
-
 	scene.init();
 	scene.update(1.0);
 }

@@ -94,7 +94,7 @@ public:
 				m_componentFamily[family] = true;
 			}
 
-			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).addComponent(e, c);
+			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).addComponent(e, std::forward<ComponentType>(c));
 			updateComponentMap(e, family);
 		}
 		else {

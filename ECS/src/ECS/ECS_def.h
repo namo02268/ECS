@@ -2,7 +2,7 @@
 #include <bitset>
 
 constexpr unsigned int MAX_COMPONENTS_FAMILY = 32;
-constexpr unsigned int MAX_ENTITIES = 50;
+constexpr unsigned int MAX_ENTITIES = 5000;
 
 using ComponentInstance = unsigned int;
 using EntityID = unsigned int;

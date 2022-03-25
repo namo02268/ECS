@@ -23,8 +23,7 @@ public:
 		free(m_componentArray);
 	}
 
-	template<typename... TArgs>
-	void addComponent(Entity& e, ComponentType& c) {
+	void addComponent(Entity& e, ComponentType&& c) {
 		m_componentArray->at(m_newInstance) = c;
 		m_entityMap.add(e, m_newInstance);
 
@@ -48,7 +47,6 @@ public:
 
 	ComponentType* getComponent(Entity& e) {
 		ComponentInstance instance = m_entityMap.getInstance(e);
-		std::cout << &m_componentArray->at(instance) << std::endl;
 		return &m_componentArray->at(instance);
 	}
 };
