@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "ECS/EntityMap.h"
 
 namespace ECS {
@@ -25,7 +27,7 @@ namespace ECS {
 		}
 
 		void addComponent(Entity& e, ComponentType&& c) {
-			m_componentArray->at(m_newInstance) = c;
+			m_componentArray->at(m_newInstance) = std::forward<ComponentType>(c);
 			m_entityMap.add(e, m_newInstance);
 
 			m_newInstance++;
@@ -49,6 +51,12 @@ namespace ECS {
 		ComponentType* getComponent(Entity& e) {
 			ComponentInstance instance = m_entityMap.getInstance(e);
 			return &m_componentArray->at(instance);
+		}
+
+		void iterateAll(std::function<void(ComponentType* c)> lambda) {
+			for (int i = 0; i < m_newInstance; i++) {
+				lambda(&m_componentArray->at(i));
+			}
 		}
 	};
 }

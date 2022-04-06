@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 #include "ECS/ComponentManager.h"
 #include "ECS/EntityManager.h"
@@ -8,7 +9,8 @@
 #include "ECS/System.h"
 #include "ECS/EventHandler.h"
 
-namespace ECS {
+namespace ECS
+{
 	class Scene {
 	private:
 		// entity manager
@@ -81,12 +83,12 @@ namespace ECS {
 				system->draw();
 		}
 
-		//---------------------------------------------Component---------------------------------------------//
-		template<typename ComponentType, typename... TArgs>
-		void addComponent(Entity& e, ComponentType&& c) {
-			auto family = getComponentTypeID<ComponentType>();
-			if (!m_componentMask[e.GetID()][family]) {
-				m_componentMask[e.GetID()][family] = true;
+	//---------------------------------------------Component---------------------------------------------//
+	template<typename ComponentType>
+	void addComponent(Entity& e, ComponentType&& c) {
+		auto family = getComponentTypeID<ComponentType>();
+		if (!m_componentMask[e.GetID()][family]) {
+			m_componentMask[e.GetID()][family] = true;
 
 
 				// if the component manager didn't exists
@@ -116,22 +118,27 @@ namespace ECS {
 			}
 		}
 
-		// TODO : [Add] error handling
-		template<typename ComponentType>
-		ComponentType* getComponent(Entity& e) {
-			auto family = getComponentTypeID<ComponentType>();
-			if (m_componentMask[e.GetID()][family]) {
-				return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
-			}
-			else {
-				std::cout << typeid(ComponentType).name() << " does not exist! Entity ID:" << e.GetID() << std::endl;
-				return nullptr;
-			}
+	template<typename ComponentType>
+	ComponentType* getComponent(Entity& e) {
+		auto family = getComponentTypeID<ComponentType>();
+		if (m_componentMask[e.GetID()][family]) {
+			return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
 		}
+		else {
+			std::cout << typeid(ComponentType).name() << " does not exist! Entity ID:" << e.GetID() << std::endl;
+			return nullptr;
+		}
+	}
 
-		ComponentFamily getComponentMask(Entity& e) {
-			return m_componentMask[e.GetID()];
-		}
+	template<typename ComponentType>
+	void iterateAll(std::function<void(ComponentType* c)> lambda) {
+		auto family = getComponentTypeID<ComponentType>();
+		static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).iterateAll(lambda);
+	}
+
+	ComponentFamily getComponentMask(Entity& e) {
+		return m_componentMask[e.GetID()];
+	}
 
 	private:
 		void updateComponentMap(Entity& e, ComponentTypeID family) {

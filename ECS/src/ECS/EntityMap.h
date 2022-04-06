@@ -12,6 +12,8 @@ namespace ECS {
 		std::array<EntityID, MAX_ENTITIES> m_instanceToEntity;
 
 	public:
+		~EntityMap() = default;
+
 		Entity getEntity(ComponentInstance i) { return m_instanceToEntity[i]; }
 		ComponentInstance getInstance(Entity e) { return m_entityToInstance[e.GetID()]; }
 
