@@ -1,6 +1,8 @@
 #pragma once
 
-class Component {
-public:
-	virtual ~Component() {}
-};
+namespace ECS {
+	class Component {
+	public:
+		virtual ~Component() {}
+	};
+}

@@ -6,6 +6,8 @@
 #include "Systems/Systems.h"
 #include "ECS/EventHandler.h"
 
+using namespace ECS;
+
 int main() {
 	auto entityManager = std::make_unique<EntityManager>();
 	auto eventHandler = std::make_unique<EventHandler>();

@@ -5,6 +5,7 @@
 #include "ECS/EntityHandle.h"
 #include "Components/Components.h"
 
+using namespace ECS;
 class TransformSystem : public System {
 public:
 	TransformSystem() {

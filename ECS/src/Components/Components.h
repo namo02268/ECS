@@ -3,6 +3,8 @@
 #include "ECS/Component.h"
 #include "ECS/EntityHandle.h"
 
+using namespace ECS;
+
 class TransformComponent : public Component {
 public:
 	float xpos = 5;
