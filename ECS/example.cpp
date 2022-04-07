@@ -31,7 +31,6 @@ int main() {
 	scene.addComponent<TransformComponent>(e2, TransformComponent(200, 20));
 	scene.addComponent<RendererComponent>(e3, RendererComponent());
 	scene.addComponent<TransformComponent>(e3, TransformComponent(300, 30));
-	scene.addComponent<TransformComponent>(e3, TransformComponent(300, 30));
 
 	scene.iterateAll<TransformComponent>([](TransformComponent* c) {
 		c->xpos += c->ypos;
