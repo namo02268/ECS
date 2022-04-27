@@ -89,45 +89,37 @@ namespace ECS
 		auto family = getComponentTypeID<ComponentType>();
 		if (!m_componentMask[e.GetID()][family]) {
 			m_componentMask[e.GetID()][family] = true;
-
-
-				// if the component manager didn't exists
-				if (!m_componentFamily[family]) {
-					m_componentManagers[family] = std::make_unique<ComponentManager<ComponentType>>();
-					m_componentFamily[family] = true;
-				}
-
-				static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).addComponent(e, std::forward<ComponentType>(c));
-				updateComponentMap(e, family);
+			// if the component manager didn't exists
+			if (!m_componentFamily[family]) {
+				m_componentManagers[family] = std::make_unique<ComponentManager<ComponentType>>();
+				m_componentFamily[family] = true;
 			}
-			else {
-				std::cout << typeid(ComponentType).name() << " is already attached! Entity ID:" << e.GetID() << std::endl;
-			}
+
+			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).addComponent(e, std::forward<ComponentType>(c));
+			updateComponentMap(e, family);
 		}
-
-		template<typename ComponentType>
-		void removeComponent(Entity& e) {
-			auto family = getComponentTypeID<ComponentType>();
-			if (m_componentMask[e.GetID()][family]) {
-				m_componentMask[e.GetID()][family] = false;
-				static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).removeComponent(e);
-				updateComponentMap(e, family);
-			}
-			else {
-				std::cout << typeid(ComponentType).name() << " does not exist! Entity ID:" << e.GetID() << std::endl;
-			}
+		else {
+			std::cout << typeid(ComponentType).name() << " is already attached! Entity ID:" << e.GetID() << std::endl;
 		}
+	}
+
+	template<typename ComponentType>
+	void removeComponent(Entity& e) {
+		auto family = getComponentTypeID<ComponentType>();
+		if (m_componentMask[e.GetID()][family]) {
+			m_componentMask[e.GetID()][family] = false;
+			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).removeComponent(e);
+			updateComponentMap(e, family);
+		}
+		else {
+			std::cout << typeid(ComponentType).name() << " does not exist! Entity ID:" << e.GetID() << std::endl;
+		}
+	}
 
 	template<typename ComponentType>
 	ComponentType* getComponent(Entity& e) {
 		auto family = getComponentTypeID<ComponentType>();
-		if (m_componentMask[e.GetID()][family]) {
-			return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
-		}
-		else {
-			std::cout << typeid(ComponentType).name() << " does not exist! Entity ID:" << e.GetID() << std::endl;
-			return nullptr;
-		}
+		return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
 	}
 
 	template<typename ComponentType>

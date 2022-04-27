@@ -6,14 +6,20 @@
 namespace ECS {
 	class TransformComponent : public Component {
 	public:
-		float xpos = 5;
-		float ypos = 5;
+		float xpos = 0.0f;
+		float ypos = 0.0f;
 		TransformComponent(int xpos, int ypos) {
-			std::cout << "Transform" << std::endl;
+//			std::cout << "Transform" << std::endl;
 			this->xpos = xpos;
 			this->ypos = ypos;
-			//		std::cout << this->xpos << std::endl;
 		}
+	};
+
+	class PhysicComponent : public Component {
+	public:
+		float position = 1.0f;
+		float velocity = 1.0f;
+		float acceleration = 1.0f;
 	};
 
 	class ColliderComponent : public Component {

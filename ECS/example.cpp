@@ -8,11 +8,43 @@
 
 using namespace ECS;
 
-int main() {
-	auto entityManager = std::make_unique<EntityManager>();
-	auto eventHandler = std::make_unique<EventHandler>();
-	Scene scene(std::move(entityManager), std::move(eventHandler));
 
+auto entityManager = std::make_unique<EntityManager>();
+auto eventHandler = std::make_unique<EventHandler>();
+Scene scene(std::move(entityManager), std::move(eventHandler));
+
+std::vector<Entity> entityArray;
+
+void testIterateAll(float dt) {
+	float sum = 0.0f;
+	scene.iterateAll<PhysicComponent>([&](PhysicComponent* c) {
+			sum += c->position + c->velocity * dt + c->acceleration * dt * dt;
+		}
+	);
+	std::cout << sum << std::endl;
+}
+
+void testGet(float dt) {
+	float sum = 0.0f;
+	for (auto& e : entityArray) {
+		auto c = scene.getComponent<PhysicComponent>(e);
+		sum += c->position + c->velocity * dt + c->acceleration * dt * dt;
+	}
+	std::cout << sum << std::endl;
+}
+
+int main() {
+	for (int i = 0; i < 1000000; i++) {
+		auto entity = scene.createEntity();
+		scene.addComponent<PhysicComponent>(entity, PhysicComponent());
+		entityArray.push_back(entity);
+	}
+
+	testIterateAll(0.1f);
+
+	testGet(0.1f);
+
+	/*
 	auto tSystem = std::make_unique<TransformSystem>();
 	scene.addSystem(std::move(tSystem));
 
@@ -28,7 +60,6 @@ int main() {
 	scene.addComponent<RendererComponent>(e1, RendererComponent());
 	scene.addComponent<TransformComponent>(e1, TransformComponent(10, 10));
 	scene.addComponent<RendererComponent>(e2, RendererComponent());
-	scene.addComponent<TransformComponent>(e2, TransformComponent(200, 20));
 	scene.addComponent<RendererComponent>(e3, RendererComponent());
 	scene.addComponent<TransformComponent>(e3, TransformComponent(300, 30));
 
@@ -39,5 +70,6 @@ int main() {
 
 	scene.init();
 	scene.update(1.0);
+	*/
 }
 
