@@ -13,13 +13,13 @@ namespace ECS {
 	template<typename ComponentType>
 	class ComponentManager : public BaseComponentManager {
 	private:
-		std::array<ComponentType, MAX_ENTITIES>* m_componentArray;
+		std::array<ComponentType, MAX_COMPONENTS>* m_componentArray;
 		EntityMap m_entityMap;
 		ComponentInstance m_newInstance = 0;
 
 	public:
 		ComponentManager() {
-			m_componentArray = static_cast<std::array<ComponentType, MAX_ENTITIES> *>(malloc(sizeof(ComponentType) * MAX_ENTITIES));
+			m_componentArray = static_cast<std::array<ComponentType, MAX_COMPONENTS> *>(malloc(sizeof(ComponentType) * MAX_COMPONENTS));
 		}
 
 		~ComponentManager() {
@@ -30,7 +30,7 @@ namespace ECS {
 			m_componentArray->at(m_newInstance) = std::forward<ComponentType>(c);
 			m_entityMap.add(e, m_newInstance);
 
-			m_newInstance++;
+			++m_newInstance;
 		}
 
 		void removeComponent(Entity& e) {
@@ -45,7 +45,7 @@ namespace ECS {
 				m_entityMap.update(lastEntity, instance);
 			}
 
-			m_newInstance--;
+			--m_newInstance;
 		}
 
 		ComponentType* getComponent(Entity& e) {
@@ -53,7 +53,7 @@ namespace ECS {
 		}
 
 		void iterateAll(std::function<void(ComponentType* c)> lambda) {
-			for (int i = 0; i < m_newInstance; i++) {
+			for (int i = 0; i < m_newInstance; ++i) {
 				lambda(&m_componentArray->at(i));
 			}
 		}

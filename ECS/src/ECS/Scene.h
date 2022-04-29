@@ -20,7 +20,7 @@ namespace ECS
 		// event handler
 		std::unique_ptr<EventHandler> m_eventHandler;
 		// ComponentMask
-		std::unordered_map<EntityID, ComponentFamily> m_componentMask;
+		std::array<ComponentFamily, MAX_ENTITIES> m_componentMask;
 		// bit array of component managers ID
 		ComponentFamily m_componentFamily;
 		// array of component managers
@@ -87,8 +87,9 @@ namespace ECS
 	template<typename ComponentType>
 	void addComponent(Entity& e, ComponentType&& c) {
 		auto family = getComponentTypeID<ComponentType>();
-		if (!m_componentMask[e.GetID()][family]) {
-			m_componentMask[e.GetID()][family] = true;
+		auto id = e.GetID();
+		if (!m_componentMask[id][family]) {
+			m_componentMask[id][family] = true;
 			// if the component manager didn't exists
 			if (!m_componentFamily[family]) {
 				m_componentManagers[family] = std::make_unique<ComponentManager<ComponentType>>();
@@ -99,7 +100,7 @@ namespace ECS
 			updateComponentMap(e, family);
 		}
 		else {
-			std::cout << typeid(ComponentType).name() << " is already attached! Entity ID:" << e.GetID() << std::endl;
+			std::cout << typeid(ComponentType).name() << " is already attached! Entity ID:" << id << std::endl;
 		}
 	}
 
@@ -138,14 +139,10 @@ namespace ECS
 				auto& componentMap = m_componentMask[e.GetID()];
 				auto requiredComponent = system->m_requiredComponent;
 				if (requiredComponent[family]) {
-					auto andbit = requiredComponent & componentMap;
-					if (andbit == system->m_requiredComponent) {
+					if ((requiredComponent & componentMap) == system->m_requiredComponent)
 						system->addEntity(e);
-					}
-					else {
+					else
 						system->removeEntity(e);
-					}
-
 				}
 			}
 		}

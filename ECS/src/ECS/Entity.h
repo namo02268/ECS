@@ -8,10 +8,12 @@ namespace ECS {
 	class Entity {
 	private:
 		EntityID m_id;
+		// child? EntityID m_child;
+		// next?  EntityID m_next;
 
 	public:
 		Entity(EntityID id) : m_id(id) {}
 		~Entity() = default;
-		inline EntityID GetID() { return m_id; }
+		EntityID GetID() { return m_id; }
 	};
 }

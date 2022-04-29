@@ -34,7 +34,10 @@ void testGet(float dt) {
 }
 
 int main() {
-	for (int i = 0; i < 1000000; i++) {
+	int entitySize = 1000000;
+	entityArray.reserve(entitySize);
+
+	for (int i = 0; i < entitySize; ++i) {
 		auto entity = scene.createEntity();
 		scene.addComponent<PhysicComponent>(entity, PhysicComponent());
 		entityArray.push_back(entity);
@@ -67,7 +70,6 @@ int main() {
 		c->xpos += c->ypos;
 		}
 	);
-
 	scene.init();
 	scene.update(1.0);
 	*/
