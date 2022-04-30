@@ -39,7 +39,7 @@ int main() {
 
 	for (int i = 0; i < entitySize; ++i) {
 		auto entity = scene.createEntity();
-		scene.addComponent<PhysicComponent>(entity, PhysicComponent());
+		scene.addComponent(entity, PhysicComponent());
 		entityArray.push_back(entity);
 	}
 
@@ -60,11 +60,11 @@ int main() {
 	auto e2 = scene.createEntity();
 	auto e3 = scene.createEntity();
 
-	scene.addComponent<RendererComponent>(e1, RendererComponent());
-	scene.addComponent<TransformComponent>(e1, TransformComponent(10, 10));
-	scene.addComponent<RendererComponent>(e2, RendererComponent());
-	scene.addComponent<RendererComponent>(e3, RendererComponent());
-	scene.addComponent<TransformComponent>(e3, TransformComponent(300, 30));
+	scene.addComponent(e1, RendererComponent());
+	scene.addComponent(e1, TransformComponent(10, 10));
+	scene.addComponent(e2, RendererComponent());
+	scene.addComponent(e3, RendererComponent());
+	scene.addComponent(e3, TransformComponent(300, 30));
 
 	scene.iterateAll<TransformComponent>([](TransformComponent* c) {
 		c->xpos += c->ypos;

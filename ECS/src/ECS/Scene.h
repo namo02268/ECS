@@ -105,7 +105,7 @@ namespace ECS
 	}
 
 	template<typename ComponentType>
-	void removeComponent(Entity& e) {
+	void removeComponent(const Entity& e) {
 		auto family = getComponentTypeID<ComponentType>();
 		if (m_componentMask[e.GetID()][family]) {
 			m_componentMask[e.GetID()][family] = false;
@@ -118,13 +118,13 @@ namespace ECS
 	}
 
 	template<typename ComponentType>
-	ComponentType* getComponent(Entity& e) {
+	ComponentType* getComponent(const Entity& e) {
 		auto family = getComponentTypeID<ComponentType>();
 		return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
 	}
 
 	template<typename ComponentType>
-	void iterateAll(std::function<void(ComponentType* c)> lambda) {
+	void iterateAll(const std::function<void(ComponentType* c)> lambda) {
 		auto family = getComponentTypeID<ComponentType>();
 		static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).iterateAll(lambda);
 	}
