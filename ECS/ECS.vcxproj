@@ -148,7 +148,6 @@
     <ClInclude Include="src\Components\Components.h" />
     <ClInclude Include="src\ECS\ECS_def.h" />
     <ClInclude Include="src\ECS\Entity.h" />
-    <ClInclude Include="src\ECS\EntityHandle.h" />
     <ClInclude Include="src\ECS\EntityManager.h" />
     <ClInclude Include="src\ECS\EntityMap.h" />
     <ClInclude Include="src\ECS\EventHandler.h" />

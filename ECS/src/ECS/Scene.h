@@ -105,7 +105,7 @@ namespace ECS
 	}
 
 	template<typename ComponentType>
-	void removeComponent(const Entity& e) {
+	void removeComponent(Entity& e) {
 		auto family = getComponentTypeID<ComponentType>();
 		if (m_componentMask[e.GetID()][family]) {
 			m_componentMask[e.GetID()][family] = false;

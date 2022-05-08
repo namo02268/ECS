@@ -8,27 +8,37 @@
 
 using namespace ECS;
 
-
 auto entityManager = std::make_unique<EntityManager>();
 auto eventHandler = std::make_unique<EventHandler>();
 Scene scene(std::move(entityManager), std::move(eventHandler));
 
-std::vector<Entity> entityArray;
 
-void testIterateAll(float dt) {
+class Player {
+public:
+	TransformComponent trans;
+	PhysicComponent physic;
+	ColliderComponent collision;
+	RendererComponent render;
+};
+
+std::vector<Entity> entityArray;
+std::vector<Player> playerArray;
+
+void testOOP(float dt) {
 	float sum = 0.0f;
-	scene.iterateAll<PhysicComponent>([&](PhysicComponent* c) {
-			sum += c->position + c->velocity * dt + c->acceleration * dt * dt;
-		}
-	);
+
+	for (auto& p : playerArray) {
+		sum += p.trans.x + p.physic.vx * dt + p.physic.ax * dt * dt;
+	}
 	std::cout << sum << std::endl;
 }
 
-void testGet(float dt) {
+void testDOP(float dt) {
 	float sum = 0.0f;
 	for (auto& e : entityArray) {
-		auto c = scene.getComponent<PhysicComponent>(e);
-		sum += c->position + c->velocity * dt + c->acceleration * dt * dt;
+		auto trans = scene.getComponent<TransformComponent>(e);
+		auto physic = scene.getComponent<PhysicComponent>(e);
+		sum += trans->x + physic->vx * dt + physic->ax * dt * dt;
 	}
 	std::cout << sum << std::endl;
 }
@@ -36,16 +46,25 @@ void testGet(float dt) {
 int main() {
 	int entitySize = 1000000;
 	entityArray.reserve(entitySize);
+	float dt = 0.1f;
 
 	for (int i = 0; i < entitySize; ++i) {
 		auto entity = scene.createEntity();
-		scene.addComponent(entity, PhysicComponent());
+		scene.addComponent(entity, TransformComponent(1.0f, 1.0f));
+		scene.addComponent(entity, PhysicComponent(1.0f, 1.0f, 1.0f, 1.0f));
 		entityArray.push_back(entity);
 	}
 
-	testIterateAll(0.1f);
+	playerArray.reserve(entitySize);
 
-	testGet(0.1f);
+	for (int i = 0; i < entitySize; ++i) {
+		auto p = Player();
+		playerArray.push_back(p);
+	}
+
+	testDOP(dt);
+
+	testOOP(dt);
 
 	/*
 	auto tSystem = std::make_unique<TransformSystem>();

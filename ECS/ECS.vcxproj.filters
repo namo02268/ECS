@@ -44,9 +44,6 @@
     <ClInclude Include="src\ECS\Scene.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\EntityHandle.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\EntityMap.h">
       <Filter>ECS</Filter>
     </ClInclude>
