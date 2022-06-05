@@ -2,7 +2,6 @@
 
 #include "ECS/Scene.h"
 #include "ECS/System.h"
-#include "ECS/EntityHandle.h"
 #include "Components/Components.h"
 
 namespace ECS {

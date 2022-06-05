@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ECS/Component.h"
-#include "ECS/EntityHandle.h"
 
 namespace ECS {
 	class TransformComponent : public Component {
