@@ -1,96 +1,69 @@
 ﻿#include <iostream>
+#include <cstdint>
 #include <bitset>
 
-#include "ECS/Scene.h"
-#include "Components/Components.h"
-#include "Systems/Systems.h"
-#include "ECS/EventHandler.h"
+#include <array>
+#include <unordered_map>
 
-using namespace ECS;
+using EntityID = std::uint64_t;
+using ComponentTypeID = EntityID;
+using ComponentInstanceID = EntityID;
 
-auto entityManager = std::make_unique<EntityManager>();
-auto eventHandler = std::make_unique<EventHandler>();
-Scene scene(std::move(entityManager), std::move(eventHandler));
+constexpr EntityID MAX_ENTITY = (1ull << 62) - 1;
+constexpr EntityID INSTANCEOF = 1ull << 63;
+constexpr EntityID CHILDOF = 1ull << 62;
 
+inline EntityID getEntityID() {
+	static EntityID entityID = 0;
+	return entityID++;
+}
 
-class Player {
-public:
-	TransformComponent trans;
-	PhysicComponent physic;
-	ColliderComponent collision;
-	RendererComponent render;
+template<typename T>
+inline ComponentTypeID getComponentTypeID() {
+	static ComponentTypeID typeID = getEntityID();
+	return typeID;
+}
+
+class A {
+
 };
 
-std::vector<Entity> entityArray;
-std::vector<Player> playerArray;
+class B {
 
-void testOOP(float dt) {
-	float sum = 0.0f;
-
-	for (auto& p : playerArray) {
-		sum += p.trans.x + p.physic.vx * dt + p.physic.ax * dt * dt;
-	}
-	std::cout << sum << std::endl;
-}
-
-void testDOP(float dt) {
-	float sum = 0.0f;
-	for (auto& e : entityArray) {
-		auto trans = scene.getComponent<TransformComponent>(e);
-		auto physic = scene.getComponent<PhysicComponent>(e);
-		sum += trans->x + physic->vx * dt + physic->ax * dt * dt;
-	}
-	std::cout << sum << std::endl;
-}
+};
 
 int main() {
-	int entitySize = 1000000;
-	entityArray.reserve(entitySize);
-	float dt = 0.1f;
+	EntityID Player = getEntityID() | INSTANCEOF;
 
-	for (int i = 0; i < entitySize; ++i) {
-		auto entity = scene.createEntity();
-		scene.addComponent(entity, TransformComponent(1.0f, 1.0f));
-		scene.addComponent(entity, PhysicComponent(1.0f, 1.0f, 1.0f, 1.0f));
-		entityArray.push_back(entity);
+	// Bit Test
+	std::cout << "Bit Test" << std::endl;
+	std::cout << MAX_ENTITY << std::endl;
+	std::cout << static_cast<std::bitset<64>>(MAX_ENTITY) << std::endl;
+	std::cout << static_cast<std::bitset<64>>(INSTANCEOF) << std::endl;
+	std::cout << static_cast<std::bitset<64>>(CHILDOF) << std::endl;
+	std::cout << static_cast<std::bitset<64>>(Player) << std::endl;
+	std::cout << static_cast<std::bitset<64>>(UINT32_MAX) << std::endl;
+	std::cout << static_cast<std::bitset<64>>(UINT64_MAX) << std::endl;
+	if (Player & INSTANCEOF) {
+		std::cout << "INSTANCE" << std::endl;
 	}
+	std::cout << UINT64_MAX << std::endl;
 
-	playerArray.reserve(entitySize);
+	// Component Type Test
+	EntityID Player1 = getEntityID();
+	ComponentTypeID CA = getComponentTypeID<A>();
+	ComponentTypeID CB = getComponentTypeID<B>();
+	ComponentTypeID CA2 = getComponentTypeID<A>();
+	EntityID Player2 = getEntityID();
+	EntityID CB2 = getComponentTypeID<B>();
 
-	for (int i = 0; i < entitySize; ++i) {
-		auto p = Player();
-		playerArray.push_back(p);
-	}
+	std::cout << "Component Type Test" << std::endl;
+	std::cout << "Player1 : " << Player1 << std::endl;
+	std::cout << "CA      : " << CA << std::endl;
+	std::cout << "CB      : " << CB << std::endl;
+	std::cout << "CA      : " << CA2 << std::endl;
+	std::cout << "Player2 : " << Player2 << std::endl;
+	std::cout << "CB      : " << CB2 << std::endl;
 
-	testDOP(dt);
-
-	testOOP(dt);
-
-	/*
-	auto tSystem = std::make_unique<TransformSystem>();
-	scene.addSystem(std::move(tSystem));
-
-	auto combatSystem = std::make_unique<CombatSystem>();
-	scene.addSystem(std::move(combatSystem));
-	auto physicsSystem = std::make_unique<PhysicsSystem>();
-	scene.addSystem(std::move(physicsSystem));
-
-	auto e1 = scene.createEntity();
-	auto e2 = scene.createEntity();
-	auto e3 = scene.createEntity();
-
-	scene.addComponent(e1, RendererComponent());
-	scene.addComponent(e1, TransformComponent(10, 10));
-	scene.addComponent(e2, RendererComponent());
-	scene.addComponent(e3, RendererComponent());
-	scene.addComponent(e3, TransformComponent(300, 30));
-
-	scene.iterateAll<TransformComponent>([](TransformComponent* c) {
-		c->xpos += c->ypos;
-		}
-	);
-	scene.init();
-	scene.update(1.0);
-	*/
+	return 0;
 }
-
