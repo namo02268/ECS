@@ -1,15 +1,11 @@
 #pragma once
 
-#include <bitset>
-#include <cstdint>
-
 using EntityID = std::uint32_t;
-using ComponentTypeID = std::uint32_t;
-using ComponentInstance = std::uint32_t;
-using EventTypeID = std::uint32_t;
+using ComponentTypeID = EntityID;
+using ComponentInstanceID = EntityID;
 
-constexpr std::int32_t MAX_ENTITIES = 1100000;
-constexpr std::int32_t MAX_COMPONENTS_FAMILY = 32;
-constexpr std::int32_t MAX_COMPONENTS = 1100000;
+constexpr EntityID MAX_ENTITIES = (1ull << 16) - 1;
+constexpr EntityID MAX_COMPONENTS = MAX_ENTITIES;
 
-using ComponentFamily = std::bitset<MAX_COMPONENTS_FAMILY>;
+constexpr EntityID INSTANCEOF = 1ull << 31;
+constexpr EntityID CHILDOF = 1ull << 30;

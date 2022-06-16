@@ -35,7 +35,7 @@
     <ClInclude Include="src\ECS\IdGenerator.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\Component.h">
+    <ClInclude Include="src\ECS\IComponent.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager.h">
@@ -44,7 +44,7 @@
     <ClInclude Include="src\ECS\Scene.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\EntityMap.h">
+    <ClInclude Include="src\ECS\EntityComponentMap.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\System.h">
