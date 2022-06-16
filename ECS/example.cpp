@@ -1,25 +1,43 @@
 ﻿#include <iostream>
 
-#include "ECS/IdGenerator.h"
-#include "ECS/ComponentManager.h"
+#include "ECS/Scene.h"
+#include "ECS/Component.h"
 
-class A {
-
+struct Trans : public ECS::Component {
+	Trans(int x, int y) : x(x), y(y) {}
+	int x = 0;
+	int y = 0;
 };
 
-class B {
+struct B : public ECS::Component {
 
 };
 
 int main() {
-	auto Player = ECS::getEntityID();
-	auto ComponentA = ECS::getComponentTypeID<A>();
-	auto ComponentB = ECS::getComponentTypeID<B>();
+	ECS::Scene ecs;
+	auto Player = ecs.createEntity();
+	auto Player2 = ecs.createEntity();
 
-	auto Player2 = ECS::getEntityID();
-	std::cout << Player2 << std::endl;
-	auto ComponentA2 = ECS::getComponentTypeID<A>();
-	std::cout << ComponentA2 << std::endl;
+	ecs.addComponent(Player, Trans(2, 2));
+	ecs.addComponent(Player, B());
+	ecs.addComponent(Player, B());
+	ecs.addComponent(Player2, Trans(2, 2));
+
+	std::cout << ecs.getComponent<Trans>(Player) << std::endl;
+	std::cout << ecs.getComponent<Trans>(Player2) << std::endl;
+
+	auto& index = ecs.getEntityIndex(Player);
+
+	for (auto& i : index) {
+		std::cout << i << std::endl;
+	}
+
+	ecs.removeComponent<Trans>(Player);
+
+	for (auto& i : index) {
+		std::cout << i << std::endl;
+	}
+
 
 	return 0;
 }

@@ -35,7 +35,7 @@
     <ClInclude Include="src\ECS\IdGenerator.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\IComponent.h">
+    <ClInclude Include="src\ECS\Component.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\ComponentManager.h">
@@ -55,9 +55,6 @@
     </ClInclude>
     <ClInclude Include="src\Systems\Systems.h">
       <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\EventHandler.h">
-      <Filter>ECS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@
 
 namespace ECS {
 	inline EntityID getEntityID() {
-		static EntityID entityID = 0;
+		static EntityID entityID = 1;
 		return entityID++;
 	}
 
