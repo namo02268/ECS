@@ -3,14 +3,19 @@
 #include "ECS/ECS_def.h"
 
 namespace ECS {
-	inline EntityID getEntityID() {
-		static EntityID entityID = 1;
-		return entityID++;
-	}
+	class IDGenerator {
+	public:
+		static EntityID getID() noexcept {
+			static EntityID entityID = 1;
+			return entityID++;
+		}
 
-	template<class T>
-	inline ComponentTypeID getComponentTypeID() {
-		static ComponentTypeID typeID = getEntityID();
-		return typeID;
-	}
+		template<class T>
+		static ComponentTypeID getTypeID() {
+			static const ComponentTypeID typeID = getID();
+			return typeID | COMPONENT;
+		}
+	};
+
 }
+

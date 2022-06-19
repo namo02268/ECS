@@ -9,7 +9,7 @@ namespace ECS {
 		~EntityManager() = default;
 
 		// TODO : When the ID is greater than MAX_ENTITIES
-		Entity createEntity() { return Entity(getEntityID()); }
+		Entity createEntity() { return Entity(IDGenerator::getID()); }
 		void destroyEnitity(Entity e) {}
 	};
 }

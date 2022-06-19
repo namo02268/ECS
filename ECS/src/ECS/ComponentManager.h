@@ -31,6 +31,10 @@ namespace ECS {
 			++m_newInstance;
 		}
 
+		ComponentType* getComponent(const Entity& e) {
+			return &m_componentArray->at(m_ecMap.getInstance(e));
+		}
+
 		void removeComponent(const Entity& e) {
 			ComponentInstanceID instance = m_ecMap.getInstance(e);
 			ComponentInstanceID lastInstance = m_newInstance - 1;
@@ -42,10 +46,6 @@ namespace ECS {
 			}
 
 			--m_newInstance;
-		}
-
-		ComponentType* getComponent(const Entity& e) {
-			return &m_componentArray->at(m_ecMap.getInstance(e));
 		}
 
 		void iterateAll(const std::function<void(ComponentType* c)> lambda) {

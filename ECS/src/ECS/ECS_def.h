@@ -8,5 +8,6 @@ using EventTypeID = EntityID;
 constexpr EntityID MAX_ENTITIES = (1ull << 16) - 1;
 constexpr EntityID MAX_COMPONENTS = MAX_ENTITIES;
 
-constexpr EntityID INSTANCEOF = 1ull << 31;
-constexpr EntityID CHILDOF = 1ull << 30;
+constexpr EntityID INSTANCE = 1ull << 31;
+constexpr EntityID CHILD = 1ull << 30;
+constexpr EntityID COMPONENT = 1ull << 29;

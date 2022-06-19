@@ -18,9 +18,8 @@ namespace ECS {
 		ComponentInstanceID getInstance(EntityID e) { return m_entityToInstance[e]; }
 
 		void add(EntityID e, ComponentInstanceID i) {
-			auto id = e;
-			m_entityToInstance[id] = i;
-			m_instanceToEntity[i] = id;
+			m_entityToInstance[e] = i;
+			m_instanceToEntity[i] = e;
 		}
 
 		void update(EntityID e, ComponentInstanceID i) {
