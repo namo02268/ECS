@@ -37,12 +37,8 @@ namespace ECS
 			return e;
 		}
 
+		// TODO : remove Component
 		void destroyEntity(Entity e) {
-			for (auto& type : m_entityIndex[e]) {
-				if (type & COMPONENT) {
-					std::cout << type << std::endl;
-				}
-			}
 			m_entityIndex.erase(e);
 			m_entityManager->destroyEnitity(e);
 		}

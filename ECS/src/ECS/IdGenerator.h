@@ -13,7 +13,7 @@ namespace ECS {
 		template<class T>
 		static ComponentTypeID getTypeID() {
 			static const ComponentTypeID typeID = getID();
-			return typeID | COMPONENT;
+			return typeID;
 		}
 	};
 

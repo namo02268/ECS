@@ -10,4 +10,3 @@ constexpr EntityID MAX_COMPONENTS = MAX_ENTITIES;
 
 constexpr EntityID INSTANCE = 1ull << 31;
 constexpr EntityID CHILD = 1ull << 30;
-constexpr EntityID COMPONENT = 1ull << 29;
