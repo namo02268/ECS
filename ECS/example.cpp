@@ -12,59 +12,85 @@ auto entityManager = std::make_unique<EntityManager>();
 auto eventHandler = std::make_unique<EventHandler>();
 Scene scene(std::move(entityManager), std::move(eventHandler));
 
+const int N = 4000000;
 
-class Player {
+struct Position {
+	float x = 1.0f;
+	float y = 1.0f;
+	float z = 1.0f;
+};
+
+struct Vertex {
+	float vertex[64];
+};
+
+class ECSPosition : public Component {
 public:
-	TransformComponent trans;
-	PhysicComponent physic;
-	ColliderComponent collision;
-	RendererComponent render;
+	float x = 1.0f;
+	float y = 1.0f;
+	float z = 1.0f;
+};
+
+class ECSVertex : public Component {
+	float vertex[64];
 };
 
 std::vector<Entity> entityArray;
-std::vector<Player> playerArray;
 
-void testOOP(float dt) {
-	float sum = 0.0f;
 
-	for (auto& p : playerArray) {
-		sum += p.trans.x + p.physic.vx * dt + p.physic.ax * dt * dt;
+struct SphereAoS {
+	Position position;
+	Vertex vert;
+};
+
+SphereAoS sphereAoS[N];
+
+struct SphereSoA {
+	Position position[N];
+	Vertex vert[N];
+};
+
+SphereSoA sphereSoA;
+
+void testAoS() {
+	float sum = 0;
+	for (int i = 0; i < N; i++) {
+		sum += sphereAoS[i].position.x + sphereAoS[i].position.y + sphereAoS[i].position.z;
 	}
 	std::cout << sum << std::endl;
 }
 
-void testDOP(float dt) {
-	float sum = 0.0f;
+void testSoA() {
+	float sum = 0;
+	for (int i = 0; i < N; i++) {
+		sum += sphereSoA.position[i].x + sphereSoA.position[i].y + sphereSoA.position[i].z;
+	}
+	std::cout << sum << std::endl;
+}
+
+void testECS() {
+	float sum = 0;
 	for (auto& e : entityArray) {
-		auto trans = scene.getComponent<TransformComponent>(e);
-		auto physic = scene.getComponent<PhysicComponent>(e);
-		sum += trans->x + physic->vx * dt + physic->ax * dt * dt;
+		auto pos = scene.getComponent<ECSPosition>(e);
+		sum += pos->x + pos->y + pos->z;
 	}
 	std::cout << sum << std::endl;
 }
 
 int main() {
-	int entitySize = 1000000;
-	entityArray.reserve(entitySize);
-	float dt = 0.1f;
-
-	for (int i = 0; i < entitySize; ++i) {
+	entityArray.reserve(N);
+	for (int i = 0; i < N; ++i) {
 		auto entity = scene.createEntity();
-		scene.addComponent(entity, TransformComponent(1.0f, 1.0f));
-		scene.addComponent(entity, PhysicComponent(1.0f, 1.0f, 1.0f, 1.0f));
+		scene.addComponent(entity, ECSPosition());
+		scene.addComponent(entity, ECSVertex());
 		entityArray.push_back(entity);
 	}
 
-	playerArray.reserve(entitySize);
+	testAoS();
+//	testSoA();
+//	testECS();
 
-	for (int i = 0; i < entitySize; ++i) {
-		auto p = Player();
-		playerArray.push_back(p);
-	}
 
-	testDOP(dt);
-
-	testOOP(dt);
 
 	/*
 	auto tSystem = std::make_unique<TransformSystem>();
