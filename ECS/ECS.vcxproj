@@ -130,6 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,22 +140,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="example.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="ComponentManager.h" />
-    <ClInclude Include="Components.h" />
-    <ClInclude Include="ECS_def.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityHandle.h" />
-    <ClInclude Include="EntityManager.h" />
-    <ClInclude Include="EntityMap.h" />
-    <ClInclude Include="EventHandler.h" />
-    <ClInclude Include="IdGenerator.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="System.h" />
-    <ClInclude Include="Systems.h" />
+    <ClInclude Include="src\ECS\Component.h" />
+    <ClInclude Include="src\ECS\ComponentManager.h" />
+    <ClInclude Include="src\Components\Components.h" />
+    <ClInclude Include="src\ECS\ECS_def.h" />
+    <ClInclude Include="src\ECS\Entity.h" />
+    <ClInclude Include="src\ECS\EntityManager.h" />
+    <ClInclude Include="src\ECS\EntityMap.h" />
+    <ClInclude Include="src\ECS\EventHandler.h" />
+    <ClInclude Include="src\ECS\IdGenerator.h" />
+    <ClInclude Include="src\ECS\Scene.h" />
+    <ClInclude Include="src\ECS\System.h" />
+    <ClInclude Include="src\Systems\Systems.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
