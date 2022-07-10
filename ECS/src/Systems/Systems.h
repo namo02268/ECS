@@ -2,7 +2,7 @@
 
 #include "ECS/Scene.h"
 #include "ECS/System.h"
-#include "Components/Components.h"
+#include "Components/Transform.h"
 
 namespace ECS {
 	class TransformSystem : public System {
@@ -10,18 +10,11 @@ namespace ECS {
 		TransformSystem() {
 			auto family = getComponentTypeID<TransformComponent>();
 			m_requiredComponent[family] = true;
-			family = getComponentTypeID<RendererComponent>();
-			m_requiredComponent[family] = true;
 		}
 
 		void init() override {
 			for (auto& e : m_entityArray) {
 				auto tansformComponent = m_parentScene->getComponent<TransformComponent>(e);
-				/*
-				std::cout << "id : " << e.GetID() << std::endl;
-				std::cout << "xpos : " << tansformComponent->xpos << std::endl;
-				std::cout << "ypos : " << tansformComponent->ypos << std::endl;
-				*/
 			}
 		}
 
