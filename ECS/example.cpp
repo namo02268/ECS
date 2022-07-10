@@ -3,6 +3,8 @@
 
 #include "ECS/Scene.h"
 #include "Components/Transform.h"
+#include "Components/Relationship.h"
+
 #include "Systems/Systems.h"
 #include "ECS/EventHandler.h"
 
@@ -11,28 +13,24 @@ using namespace ECS;
 int main() {
 	Scene* scene = new Scene();
 
-	auto e1 = scene->createEntity();
-	auto e2 = scene->createEntity();
-	auto e3 = scene->createEntity();
+	auto transformSystem = std::make_unique<TransformSystem>();
+	scene->addSystem(std::move(transformSystem));
 
-	scene->addComponent(e1, TransformComponent(10, 10));
-	scene->addComponent(e2, TransformComponent(10, 10));
-	scene->addComponent(e3, TransformComponent(10, 10));
+	auto parent = scene->createEntity();
+	scene->addComponent<TransformComponent>(parent, TransformComponent(10.0, 10.0));
 
-	std::cout << scene->getComponent<TransformComponent>(e1) << std::endl;
-	std::cout << scene->getComponent<TransformComponent>(e2) << std::endl;
-	std::cout << scene->getComponent<TransformComponent>(e3) << std::endl;
+	for (int i = 0; i < 50000; ++i) {
+		auto child = scene->createEntity();
+		scene->getComponent<Relationship>(child)->parent = parent;
+		scene->addComponent<TransformComponent>(child, TransformComponent(1.0, 1.0));
+	}
 
-	scene->destroyEntity(e1);
-	auto e4 = scene->createEntity();
-	scene->addComponent(e4, TransformComponent(10, 10));
-
-	std::cout << scene->getComponent<TransformComponent>(e1) << std::endl;
-	std::cout << scene->getComponent<TransformComponent>(e2) << std::endl;
-	std::cout << scene->getComponent<TransformComponent>(e4) << std::endl;
+	std::cout << scene->getComponent<TransformComponent>(2)->x << std::endl;
 
 	scene->init();
-	scene->update(1.0);
+	scene->update(1.0f);
+
+	std::cout << scene->getComponent<TransformComponent>(2)->x << std::endl;
 
 	delete scene;
 }

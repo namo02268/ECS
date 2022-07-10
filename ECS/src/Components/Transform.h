@@ -4,12 +4,10 @@
 
 namespace ECS {
 	struct TransformComponent : public Component {
-	public:
+		TransformComponent(float x, float y) : x(x), y(y) {}
+		TransformComponent() {}
+
 		float x = 1.0f;
 		float y = 1.0f;
-
-	public:
-		TransformComponent() {}
-		TransformComponent(float x, float y) : x(x), y(y) {}
 	};
 }

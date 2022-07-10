@@ -15,17 +15,17 @@ namespace ECS {
 		~EntityMap() = default;
 
 		Entity getEntity(ComponentInstance i) { return m_instanceToEntity[i]; }
-		ComponentInstance getInstance(Entity e) { return m_entityToInstance[e.GetID()]; }
+		ComponentInstance getInstance(Entity e) { return m_entityToInstance[e]; }
 
 		void add(Entity& e, ComponentInstance i) {
-			auto id = e.GetID();
+			auto id = e;
 			m_entityToInstance[id] = i;
 			m_instanceToEntity[i] = id;
 		}
 
 		void update(Entity& e, ComponentInstance i) {
-			m_entityToInstance[e.GetID()] = i;
-			m_instanceToEntity[i] = e.GetID();
+			m_entityToInstance[e] = i;
+			m_instanceToEntity[i] = e;
 		}
 	};
 	/*

@@ -9,6 +9,8 @@
 #include "ECS/System.h"
 #include "ECS/EventHandler.h"
 
+#include "Components/Relationship.h"
+
 namespace ECS
 {
 	class Scene {
@@ -43,11 +45,12 @@ namespace ECS
 		Entity createEntity() {
 			Entity e = m_entityManager->createEntity();
 			m_allEntityArray.emplace_back(e);
+			addComponent<Relationship>(e, Relationship());
 			return e;
 		}
 
 		void destroyEntity(Entity e) {
-			auto id = e.GetID();
+			auto id = e;
 			auto& mask = m_componentMask[id];
 
 			for (int i = 0; i < MAX_COMPONENTS_FAMILY; i++) {
@@ -58,7 +61,7 @@ namespace ECS
 
 			for (auto itr = m_allEntityArray.begin(); itr != m_allEntityArray.end(); ++itr) {
 				Entity e_itr = *itr;
-				if (e_itr.GetID() == e.GetID()) {
+				if (e_itr == e) {
 					m_allEntityArray.erase(itr);
 					return;
 				}
@@ -100,7 +103,7 @@ namespace ECS
 	template<typename ComponentType>
 	void addComponent(Entity& e, ComponentType&& c) {
 		auto family = getComponentTypeID<ComponentType>();
-		auto id = e.GetID();
+		auto id = e;
 		if (!m_componentMask[id][family]) {
 			m_componentMask[id][family] = true;
 			// if the component manager didn't exists
@@ -143,13 +146,13 @@ namespace ECS
 	}
 
 	ComponentFamily getComponentMask(Entity& e) {
-		return m_componentMask[e.GetID()];
+		return m_componentMask[e];
 	}
 
 	private:
 		void updateComponentMap(Entity& e, ComponentTypeID family) {
 			for (const auto& system : m_systems) {
-				auto& componentMap = m_componentMask[e.GetID()];
+				auto& componentMap = m_componentMask[e];
 				auto requiredComponent = system->m_requiredComponent;
 				if (requiredComponent[family]) {
 					if ((requiredComponent & componentMap) == system->m_requiredComponent)

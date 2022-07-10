@@ -13,13 +13,17 @@ namespace ECS {
 		}
 
 		void init() override {
-			for (auto& e : m_entityArray) {
-				auto tansformComponent = m_parentScene->getComponent<TransformComponent>(e);
-			}
 		}
 
 		void update(float dt) override {
-
+			for (auto& e : m_entityArray) {
+				auto trans = m_parentScene->getComponent<TransformComponent>(e);
+				auto parent = m_parentScene->getComponent<Relationship>(e)->parent;
+				if (parent) {
+					trans->x += m_parentScene->getComponent<TransformComponent>(parent)->x;
+				}
+				trans->x += trans->y;
+			}
 		}
 
 		void draw() override {

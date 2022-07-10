@@ -34,7 +34,7 @@ namespace ECS {
 		void removeEntity(Entity& e) {
 			for (auto itr = m_entityArray.begin(); itr != m_entityArray.end(); ++itr) {
 				Entity e_itr = *itr;
-				if (e_itr.GetID() == e.GetID()) {
+				if (e_itr == e) {
 					m_entityArray.erase(itr);
 					return;
 				}
