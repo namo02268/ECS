@@ -19,23 +19,19 @@ int main() {
 	auto Player = ecs.createEntity();
 	auto Player2 = ecs.createEntity();
 
-	ecs.addComponent(Player2, Trans(2, 2));
 	ecs.addComponent(Player, Trans(2, 2));
-	ecs.addComponent(Player, B());
+	ecs.addComponent(Player2, Trans(2, 2));
 
-	std::cout << ecs.getComponent<Trans>(Player2) << std::endl;
 	std::cout << ecs.getComponent<Trans>(Player) << std::endl;
+	std::cout << ecs.getComponent<Trans>(Player2) << std::endl;
 
-	auto& index = ecs.getEntityIndex(Player);
+	ecs.destroyEntity(Player);
 
-	for (auto& i : index) {
-		std::cout << static_cast<std::bitset<32>>(i) << std::endl;
-	}
 	auto Player3 = ecs.createEntity();
 	ecs.addComponent(Player3, Trans(2, 2));
+	std::cout << ecs.getComponent<Trans>(Player2) << std::endl;
+	std::cout << ecs.getComponent<Trans>(Player3) << std::endl;
 
-	ecs.removeComponent<Trans>(Player);
-	ecs.destroyEntity(Player);
 
 	return 0;
 }

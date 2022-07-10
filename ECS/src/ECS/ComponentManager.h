@@ -6,7 +6,8 @@
 namespace ECS {
 	class IComponentManager {
 	public:
-		virtual ~IComponentManager() {}
+		virtual ~IComponentManager() = default;
+		virtual void EntityDestroyed(Entity& e) = 0;
 	};
 
 	template<class ComponentType>
@@ -46,6 +47,10 @@ namespace ECS {
 			}
 
 			--m_newInstance;
+		}
+
+		void EntityDestroyed(Entity& e) override {
+			removeComponent(e);
 		}
 
 		void iterateAll(const std::function<void(ComponentType* c)> lambda) {

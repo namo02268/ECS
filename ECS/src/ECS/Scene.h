@@ -39,6 +39,9 @@ namespace ECS
 
 		// TODO : remove Component
 		void destroyEntity(Entity e) {
+			for (auto& c : m_entityIndex[e]) {
+				m_componentManagers[c]->EntityDestroyed(e);
+			}
 			m_entityIndex.erase(e);
 			m_entityManager->destroyEnitity(e);
 		}
