@@ -15,22 +15,26 @@ namespace ECS
 	private:
 		// entity manager
 		std::unique_ptr<EntityManager> m_entityManager;
-		// entity array
-		std::vector<Entity> m_allEntityArray;
+		// array of component managers
+		std::array<std::unique_ptr<IComponentManager>, MAX_COMPONENTS_FAMILY> m_componentManagers;
 		// event handler
 		std::unique_ptr<EventHandler> m_eventHandler;
+
+		// entity array
+		std::vector<Entity> m_allEntityArray;
 		// ComponentMask
 		std::array<ComponentFamily, MAX_ENTITIES> m_componentMask;
 		// bit array of component managers ID
 		ComponentFamily m_componentFamily;
-		// array of component managers
-		std::array<std::unique_ptr<BaseComponentManager>, MAX_COMPONENTS_FAMILY> m_componentManagers;
 		// systems
 		std::vector<std::unique_ptr<System>> m_systems;
 
 	public:
-		Scene(std::unique_ptr<EntityManager> entityManager, std::unique_ptr<EventHandler> eventHandler)
-			: m_entityManager(std::move(entityManager)), m_eventHandler(std::move(eventHandler)) {};
+		Scene() {
+			m_entityManager = std::make_unique<EntityManager>();
+			m_eventHandler = std::make_unique<EventHandler>();
+		};
+
 		Scene(const Scene&) = delete;
 		Scene& operator=(const Scene&) = delete;
 		~Scene() = default;
@@ -43,6 +47,15 @@ namespace ECS
 		}
 
 		void destroyEntity(Entity e) {
+			auto id = e.GetID();
+			auto& mask = m_componentMask[id];
+
+			for (int i = 0; i < MAX_COMPONENTS_FAMILY; i++) {
+				if (mask[i]) {
+					m_componentManagers[i]->OnDestroyEntity(e);
+				}
+			}
+
 			for (auto itr = m_allEntityArray.begin(); itr != m_allEntityArray.end(); ++itr) {
 				Entity e_itr = *itr;
 				if (e_itr.GetID() == e.GetID()) {

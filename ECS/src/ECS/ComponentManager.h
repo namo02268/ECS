@@ -5,13 +5,14 @@
 #include "ECS/EntityMap.h"
 
 namespace ECS {
-	class BaseComponentManager {
+	class IComponentManager {
 	public:
-		virtual ~BaseComponentManager() {}
+		virtual ~IComponentManager() {}
+		virtual void OnDestroyEntity(Entity& e) = 0;
 	};
 
 	template<typename ComponentType>
-	class ComponentManager : public BaseComponentManager {
+	class ComponentManager : public IComponentManager {
 	private:
 		std::array<ComponentType, MAX_COMPONENTS>* m_componentArray;
 		EntityMap m_entityMap;
@@ -50,6 +51,10 @@ namespace ECS {
 
 		ComponentType* getComponent(const Entity& e) {
 			return &m_componentArray->at(m_entityMap.getInstance(e));
+		}
+
+		void OnDestroyEntity(Entity& e) override {
+			removeComponent(e);
 		}
 
 		void iterateAll(const std::function<void(ComponentType* c)> lambda) {
