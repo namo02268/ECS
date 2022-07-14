@@ -12,7 +12,7 @@ auto entityManager = std::make_unique<EntityManager>();
 auto eventHandler = std::make_unique<EventHandler>();
 Scene scene(std::move(entityManager), std::move(eventHandler));
 
-const int N = 4000000;
+const int N = 1000000;
 
 struct Position {
 	float x = 1.0f;
@@ -55,7 +55,7 @@ SphereSoA sphereSoA;
 void testAoS() {
 	float sum = 0;
 	for (int i = 0; i < N; i++) {
-		sum += sphereAoS[i].position.x + sphereAoS[i].position.y + sphereAoS[i].position.z;
+		sum += sphereAoS[i].position.x * sphereAoS[i].position.y * sphereAoS[i].position.z / 100;
 	}
 	std::cout << sum << std::endl;
 }
@@ -63,7 +63,7 @@ void testAoS() {
 void testSoA() {
 	float sum = 0;
 	for (int i = 0; i < N; i++) {
-		sum += sphereSoA.position[i].x + sphereSoA.position[i].y + sphereSoA.position[i].z;
+		sum += sphereSoA.position[i].x * sphereSoA.position[i].y * sphereSoA.position[i].z / 100;
 	}
 	std::cout << sum << std::endl;
 }
@@ -72,8 +72,16 @@ void testECS() {
 	float sum = 0;
 	for (auto& e : entityArray) {
 		auto pos = scene.getComponent<ECSPosition>(e);
-		sum += pos->x + pos->y + pos->z;
+		sum += pos->x * pos->y * pos->z / 100;
 	}
+	std::cout << sum << std::endl;
+}
+
+void testIterateAll() {
+	float sum = 0;
+	scene.iterateAll<ECSPosition>([&](ECSPosition* c) {
+		sum += c->x * c->y * c->z / 100;
+		});
 	std::cout << sum << std::endl;
 }
 
@@ -87,8 +95,9 @@ int main() {
 	}
 
 	testAoS();
-//	testSoA();
-//	testECS();
+	testSoA();
+	testECS();
+	testIterateAll();
 
 
 
