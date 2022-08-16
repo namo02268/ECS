@@ -150,7 +150,7 @@
     <ClInclude Include="src\ECS\ECS_def.h" />
     <ClInclude Include="src\ECS\Entity.h" />
     <ClInclude Include="src\ECS\EntityManager.h" />
-    <ClInclude Include="src\ECS\EntityMap.h" />
+    <ClInclude Include="src\ECS\SparseSet.h" />
     <ClInclude Include="src\ECS\EventHandler.h" />
     <ClInclude Include="src\ECS\IdGenerator.h" />
     <ClInclude Include="src\ECS\Scene.h" />

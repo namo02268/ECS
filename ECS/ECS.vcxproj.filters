@@ -41,7 +41,7 @@
     <ClInclude Include="src\ECS\Scene.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\EntityMap.h">
+    <ClInclude Include="src\ECS\SparseSet.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\System.h">

@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "ECS/EntityMap.h"
+#include "ECS/SparseSet.h"
 
 namespace ECS {
 	class IComponentManager {
@@ -15,7 +15,7 @@ namespace ECS {
 	class ComponentManager : public IComponentManager {
 	private:
 		std::array<ComponentType, MAX_COMPONENTS>* m_componentArray;
-		EntityMap m_entityMap;
+		SparseSet m_entityMap;
 		ComponentInstance m_newInstance = 0;
 
 	public:
