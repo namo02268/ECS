@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <bitset>
+#include <chrono>
 
 #include "ECS/Scene.h"
 #include "Components/Components.h"
@@ -55,7 +56,9 @@ SphereSoA sphereSoA;
 void testAoS() {
 	float sum = 0;
 	for (int i = 0; i < N; i++) {
-		sum += sphereAoS[i].position.x * sphereAoS[i].position.y * sphereAoS[i].position.z / 100;
+		sum += sphereAoS[i].position.x * sphereAoS[i].position.x * 
+			   sphereAoS[i].position.y * sphereAoS[i].position.y *
+			   sphereAoS[i].position.z * sphereAoS[i].position.z / 100;
 	}
 	std::cout << sum << std::endl;
 }
@@ -63,7 +66,9 @@ void testAoS() {
 void testSoA() {
 	float sum = 0;
 	for (int i = 0; i < N; i++) {
-		sum += sphereSoA.position[i].x * sphereSoA.position[i].y * sphereSoA.position[i].z / 100;
+		sum += sphereSoA.position[i].x * sphereSoA.position[i].x *
+			   sphereSoA.position[i].y * sphereSoA.position[i].y *
+			   sphereSoA.position[i].z * sphereSoA.position[i].z / 100;
 	}
 	std::cout << sum << std::endl;
 }
@@ -72,7 +77,9 @@ void testECS() {
 	float sum = 0;
 	for (auto& e : entityArray) {
 		auto pos = scene.getComponent<ECSPosition>(e);
-		sum += pos->x * pos->y * pos->z / 100;
+		sum += pos->x * pos->x *
+			   pos->y * pos->y *
+			   pos->z * pos->z / 100;
 	}
 	std::cout << sum << std::endl;
 }
@@ -94,10 +101,22 @@ int main() {
 		entityArray.push_back(entity);
 	}
 
+	auto start = std::chrono::system_clock::now();
 	testAoS();
+	auto end = std::chrono::system_clock::now();
+	std::cout << "AoS : " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << std::endl;
+
+	start = std::chrono::system_clock::now();
 	testSoA();
+	end = std::chrono::system_clock::now();
+	std::cout << "SoA : " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << std::endl;
+
+	start = std::chrono::system_clock::now();
 	testECS();
-	testIterateAll();
+	end = std::chrono::system_clock::now();
+	std::cout << "ECS : " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << std::endl;
+
+//	testIterateAll();
 
 
 
