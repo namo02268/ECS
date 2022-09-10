@@ -46,13 +46,6 @@ public:
 };
 
 int main() {
-	MyVector<int, std::allocator<int>> v(3);
-
-	std::cout << &v.at(0) << std::endl;
-	std::cout << &v.at(1) << std::endl;
-	std::cout << &v.at(2) << std::endl;
-
-	/*
 	Scene* scene = new Scene();
 
 	auto transformSystem = std::make_unique<TransformSystem>();
@@ -75,6 +68,5 @@ int main() {
 	std::cout << scene->getComponent<TransformComponent>(2)->x << std::endl;
 
 	delete scene;
-	*/
 }
 
