@@ -129,7 +129,7 @@ namespace ECS
 			updateComponentMap(e, family);
 		}
 		else {
-			std::cout << typeid(ComponentType).name() << " does not exist! Entity ID:" << e.GetID() << std::endl;
+			std::cout << typeid(ComponentType).name() << " does not exist! Entity ID:" << e << std::endl;
 		}
 	}
 
