@@ -14,16 +14,15 @@ namespace ECS {
 	public:
 		~SparseSet() = default;
 
-		Entity getEntity(ComponentInstance i) { return m_dense[i]; }
-		ComponentInstance getInstance(Entity e) { return m_sparse[e]; }
+		Entity getEntity(const ComponentInstance i) const { return m_dense[i]; }
+		ComponentInstance getInstance(const Entity e) const { return m_sparse[e]; }
 
-		void add(Entity& e, ComponentInstance i) {
-			auto id = e;
-			m_sparse[id] = i;
-			m_dense[i] = id;
+		void add(const Entity e, const ComponentInstance i) {
+			m_sparse[e] = i;
+			m_dense[i] = e;
 		}
 
-		void update(Entity& e, ComponentInstance i) {
+		void update(const Entity e, const ComponentInstance i) {
 			m_sparse[e] = i;
 			m_dense[i] = e;
 		}

@@ -10,49 +10,7 @@
 
 using namespace ECS;
 
-template <class T, class Allocator >
-class MyVector {
-private:
-	T* data_;
-	std::size_t size_;
-	Allocator alloc_;
-
-public:
-	MyVector(std::size_t size) {
-		using traits = std::allocator_traits<Allocator>;
-
-		size_ = size;
-
-		data_ = traits::allocate(alloc_, size);
-
-		for (std::size_t i = 0; i < size_; ++i) {
-			traits::construct(alloc_, &data_[i]);
-		}
-	}
-
-	~MyVector() {
-		using traits = std::allocator_traits<Allocator>;
-
-		for (std::size_t i = 0; i < size_; ++i) {
-			traits::destroy(alloc_, &data_[i]);
-		}
-
-		traits::deallocate(alloc_, data_, size_);
-	}
-
-	int& at(std::size_t n) {
-		return data_[n];
-	}
-};
-
 int main() {
-	MyVector<int, std::allocator<int>> v(3);
-
-	std::cout << &v.at(0) << std::endl;
-	std::cout << &v.at(1) << std::endl;
-	std::cout << &v.at(2) << std::endl;
-
-	/*
 	Scene* scene = new Scene();
 
 	auto transformSystem = std::make_unique<TransformSystem>();
@@ -75,6 +33,5 @@ int main() {
 	std::cout << scene->getComponent<TransformComponent>(2)->x << std::endl;
 
 	delete scene;
-	*/
 }
 
