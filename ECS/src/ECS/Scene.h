@@ -123,13 +123,13 @@ namespace ECS
 	template<typename ComponentType>
 	void removeComponent(Entity& e) {
 		auto family = getComponentTypeID<ComponentType>();
-		if (m_componentMask[e.GetID()][family]) {
-			m_componentMask[e.GetID()][family] = false;
+		if (m_componentMask[e][family]) {
+			m_componentMask[e][family] = false;
 			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).removeComponent(e);
 			updateComponentMap(e, family);
 		}
 		else {
-			std::cout << typeid(ComponentType).name() << " does not exist! Entity ID:" << e.GetID() << std::endl;
+			std::cout << typeid(ComponentType).name() << " does not exist! Entity ID:" << e << std::endl;
 		}
 	}
 
