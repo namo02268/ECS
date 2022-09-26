@@ -99,63 +99,63 @@ namespace ECS
 				system->draw();
 		}
 
-	//---------------------------------------------Component---------------------------------------------//
-	template<typename ComponentType>
-	void addComponent(Entity& e, ComponentType&& c) {
-		auto family = getComponentTypeID<ComponentType>();
-		auto id = e;
-		if (!m_componentMask[id][family]) {
-			m_componentMask[id][family] = true;
-			// if the component manager didn't exists
-			if (!m_componentFamily[family]) {
-				m_componentManagers[family] = std::make_unique<ComponentManager<ComponentType>>();
-				m_componentFamily[family] = true;
+		//---------------------------------------------Component---------------------------------------------//
+		template<typename ComponentType>
+		void addComponent(Entity& e, ComponentType&& c) {
+			auto family = getComponentTypeID<ComponentType>();
+			auto id = e;
+			if (!m_componentMask[id][family]) {
+				m_componentMask[id][family] = true;
+				// if the component manager didn't exists
+				if (!m_componentFamily[family]) {
+					m_componentManagers[family] = std::make_unique<ComponentManager<ComponentType>>();
+					m_componentFamily[family] = true;
+				}
+
+				static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).addComponent(e, std::forward<ComponentType>(c));
+				updateComponentMask(e, family);
 			}
-
-			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).addComponent(e, std::forward<ComponentType>(c));
-			updateComponentMap(e, family);
+			else {
+				std::cout << typeid(ComponentType).name() << " is already attached! Entity ID:" << id << std::endl;
+			}
 		}
-		else {
-			std::cout << typeid(ComponentType).name() << " is already attached! Entity ID:" << id << std::endl;
+
+		template<typename ComponentType>
+		void removeComponent(Entity& e) {
+			auto family = getComponentTypeID<ComponentType>();
+			if (m_componentMask[e][family]) {
+				m_componentMask[e].reset(family);
+				static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).removeComponent(e);
+				updateComponentMask(e, family);
+			}
+			else {
+				std::cout << typeid(ComponentType).name() << " does not exist! Entity ID:" << e << std::endl;
+			}
 		}
-	}
 
-	template<typename ComponentType>
-	void removeComponent(Entity& e) {
-		auto family = getComponentTypeID<ComponentType>();
-		if (m_componentMask[e][family]) {
-			m_componentMask[e][family] = false;
-			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).removeComponent(e);
-			updateComponentMap(e, family);
+		template<typename ComponentType>
+		ComponentType* getComponent(const Entity& e) {
+			auto family = getComponentTypeID<ComponentType>();
+			return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
 		}
-		else {
-			std::cout << typeid(ComponentType).name() << " does not exist! Entity ID:" << e << std::endl;
+
+		template<typename ComponentType>
+		void iterateAll(const std::function<void(ComponentType* c)> lambda) {
+			auto family = getComponentTypeID<ComponentType>();
+			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).iterateAll(lambda);
 		}
-	}
 
-	template<typename ComponentType>
-	ComponentType* getComponent(const Entity& e) {
-		auto family = getComponentTypeID<ComponentType>();
-		return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
-	}
-
-	template<typename ComponentType>
-	void iterateAll(const std::function<void(ComponentType* c)> lambda) {
-		auto family = getComponentTypeID<ComponentType>();
-		static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).iterateAll(lambda);
-	}
-
-	ComponentFamily getComponentMask(Entity& e) {
-		return m_componentMask[e];
-	}
+		ComponentFamily getComponentMask(Entity& e) {
+			return m_componentMask[e];
+		}
 
 	private:
-		void updateComponentMap(Entity& e, ComponentTypeID family) {
+		void updateComponentMask(Entity& e, ComponentTypeID family) {
 			for (const auto& system : m_systems) {
-				auto& componentMap = m_componentMask[e];
+				auto& mask = m_componentMask[e];
 				auto requiredComponent = system->m_requiredComponent;
 				if (requiredComponent[family]) {
-					if ((requiredComponent & componentMap) == system->m_requiredComponent)
+					if ((requiredComponent & mask) == system->m_requiredComponent)
 						system->addEntity(e);
 					else
 						system->removeEntity(e);
