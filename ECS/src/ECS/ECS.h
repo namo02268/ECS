@@ -41,14 +41,14 @@ namespace ECS
 		~ECS() = default;
 
 		//---------------------------------------------Entity---------------------------------------------//
-		Entity createEntity() {
-			Entity e = m_entityManager->createEntity();
+		Entity CreateEntity() {
+			Entity e = m_entityManager->CreateEntity();
 			m_allEntityArray.emplace_back(e);
-			addComponent<Relationship>(e, Relationship());
+			AddComponent<Relationship>(e, Relationship());
 			return e;
 		}
 
-		void destroyEntity(Entity e) {
+		void DestroyEntity(Entity e) {
 			auto id = e;
 			auto& mask = m_componentMask[id];
 
@@ -67,41 +67,41 @@ namespace ECS
 			}
 
 			for (auto& system : m_systems) {
-				system->removeEntity(e);
+				system->RemoveEntity(e);
 			}
-			m_entityManager->destroyEnitity(e);
+			m_entityManager->DestroyEnitity(e);
 		}
 
-		std::vector<Entity>& getAllEntityArray() {
+		std::vector<Entity>& GetAllEntityArray() {
 			return m_allEntityArray;
 		}
 
 		//---------------------------------------------System---------------------------------------------//
-		void addSystem(std::unique_ptr<System> system) {
+		void AddSystem(std::unique_ptr<System> system) {
 			system->m_parentScene = this;
 			system->m_eventHandler = m_eventHandler.get();
 			m_systems.push_back(std::move(system));
 		}
 
-		void init() {
+		void Init() {
 			for (const auto& system : m_systems)
-				system->init();
+				system->Init();
 		}
 
-		void update(float dt) {
+		void Update(float dt) {
 			for (const auto& system : m_systems)
-				system->update(dt);
+				system->Update(dt);
 		}
 
-		void draw() {
+		void Draw() {
 			for (const auto& system : m_systems)
-				system->draw();
+				system->Draw();
 		}
 
 		//---------------------------------------------Component---------------------------------------------//
 		template<typename ComponentType>
-		void addComponent(Entity& e, ComponentType&& c) {
-			auto family = getComponentTypeID<ComponentType>();
+		void AddComponent(Entity& e, ComponentType&& c) {
+			auto family = GetComponentTypeID<ComponentType>();
 			auto id = e;
 			if (!m_componentMask[id][family]) {
 				m_componentMask[id][family] = true;
@@ -111,8 +111,8 @@ namespace ECS
 					m_componentFamily[family] = true;
 				}
 
-				static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).addComponent(e, std::forward<ComponentType>(c));
-				updateComponentMask(e, family);
+				static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).AddComponent(e, std::forward<ComponentType>(c));
+				UpdateComponentMask(e, family);
 			}
 			else {
 				std::cout << typeid(ComponentType).name() << " is already attached! Entity ID:" << id << std::endl;
@@ -120,12 +120,12 @@ namespace ECS
 		}
 
 		template<typename ComponentType>
-		void removeComponent(Entity& e) {
-			auto family = getComponentTypeID<ComponentType>();
+		void RemoveComponent(Entity& e) {
+			auto family = GetComponentTypeID<ComponentType>();
 			if (m_componentMask[e][family]) {
 				m_componentMask[e].reset(family);
-				static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).removeComponent(e);
-				updateComponentMask(e, family);
+				static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).RemoveComponent(e);
+				UpdateComponentMask(e, family);
 			}
 			else {
 				std::cout << typeid(ComponentType).name() << " does not exist! Entity ID:" << e << std::endl;
@@ -133,31 +133,31 @@ namespace ECS
 		}
 
 		template<typename ComponentType>
-		ComponentType* getComponent(const Entity& e) {
-			auto family = getComponentTypeID<ComponentType>();
-			return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).getComponent(e);
+		ComponentType* GetComponent(const Entity& e) {
+			auto family = GetComponentTypeID<ComponentType>();
+			return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).GetComponent(e);
 		}
 
 		template<typename ComponentType>
-		void iterateAll(const std::function<void(ComponentType* c)> lambda) {
-			auto family = getComponentTypeID<ComponentType>();
-			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).iterateAll(lambda);
+		void IterateAll(const std::function<void(ComponentType* c)> lambda) {
+			auto family = GetComponentTypeID<ComponentType>();
+			static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).IterateAll(lambda);
 		}
 
-		ComponentFamily getComponentMask(Entity& e) {
+		ComponentFamily GetComponentMask(Entity& e) {
 			return m_componentMask[e];
 		}
 
 	private:
-		void updateComponentMask(Entity& e, ComponentTypeID family) {
+		void UpdateComponentMask(Entity& e, ComponentTypeID family) {
 			for (const auto& system : m_systems) {
 				auto& mask = m_componentMask[e];
 				auto requiredComponent = system->m_requiredComponent;
 				if (requiredComponent[family]) {
 					if ((requiredComponent & mask) == system->m_requiredComponent)
-						system->addEntity(e);
+						system->AddEntity(e);
 					else
-						system->removeEntity(e);
+						system->RemoveEntity(e);
 				}
 			}
 		}

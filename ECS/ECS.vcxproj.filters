@@ -38,7 +38,7 @@
     <ClInclude Include="src\ECS\ComponentManager.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\Scene.h">
+    <ClInclude Include="src\ECS\ECS.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\SparseSet.h">

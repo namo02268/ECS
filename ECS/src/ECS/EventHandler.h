@@ -53,24 +53,24 @@ namespace ECS {
 		~EventHandler() = default;
 
 		template<typename EventType>
-		void publish(EventType* event) {
-			if (m_subscribers[getEventTypeID<EventType>()] == nullptr) {
+		void Publish(EventType* event) {
+			if (m_subscribers[GetEventTypeID<EventType>()] == nullptr) {
 				return;
 			}
 
-			for (auto& handler : *m_subscribers[getEventTypeID<EventType>()]) {
+			for (auto& handler : *m_subscribers[GetEventTypeID<EventType>()]) {
 				if (handler != nullptr)
 					handler->exec(event);
 			}
 		}
 
 		template<typename T, typename EventType>
-		void subscribe(T* instance, void (T::* memberFunction)(EventType*)) {
-			if (m_subscribers[getEventTypeID<EventType>()] == nullptr) {
-				m_subscribers[getEventTypeID<EventType>()] = std::make_unique<HandlerList>();
+		void Subscribe(T* instance, void (T::* memberFunction)(EventType*)) {
+			if (m_subscribers[GetEventTypeID<EventType>()] == nullptr) {
+				m_subscribers[GetEventTypeID<EventType>()] = std::make_unique<HandlerList>();
 			}
 
-			m_subscribers[getEventTypeID<EventType>()]->push_back(std::make_unique<MemberFunctionHandler<T, EventType>>(instance, memberFunction));
+			m_subscribers[GetEventTypeID<EventType>()]->push_back(std::make_unique<MemberFunctionHandler<T, EventType>>(instance, memberFunction));
 		}
 	};
 }
