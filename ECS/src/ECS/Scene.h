@@ -13,10 +13,10 @@
 
 namespace ECS
 {
-	class Scene {
+	class ECS {
 	private:
 		// entity manager
-		std::unique_ptr<EntityManager> m_entityManager;
+		std::unique_ptr<EntityManager> m_entityManager = std::make_unique<EntityManager>();
 		// array of component managers
 		std::array<std::unique_ptr<IComponentManager>, MAX_COMPONENTS_FAMILY> m_componentManagers;
 		// event handler
@@ -32,14 +32,13 @@ namespace ECS
 		std::vector<std::unique_ptr<System>> m_systems;
 
 	public:
-		Scene() {
-			m_entityManager = std::make_unique<EntityManager>();
+		ECS() {
 			m_eventHandler = std::make_unique<EventHandler>();
 		};
 
-		Scene(const Scene&) = delete;
-		Scene& operator=(const Scene&) = delete;
-		~Scene() = default;
+		ECS(const ECS&) = delete;
+		ECS& operator=(const ECS&) = delete;
+		~ECS() = default;
 
 		//---------------------------------------------Entity---------------------------------------------//
 		Entity createEntity() {

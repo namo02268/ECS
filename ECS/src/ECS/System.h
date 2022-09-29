@@ -7,14 +7,14 @@
 #include "ECS/EventHandler.h"
 
 namespace ECS {
-	class Scene;
+	class ECS;
 
 	class System {
 	protected:
 		std::vector<Entity> m_entityArray;
 
 	public:
-		Scene* m_parentScene;
+		ECS* m_parentScene;
 		EventHandler* m_eventHandler;
 		ComponentFamily m_requiredComponent;
 
