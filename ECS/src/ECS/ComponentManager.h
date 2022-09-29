@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "ECS/EntityMap.h"
+#include "ECS/SparseSet.h"
 
 namespace ECS {
 	class IComponentManager {
@@ -15,7 +15,7 @@ namespace ECS {
 	class ComponentManager : public IComponentManager {
 	private:
 		std::array<ComponentType, MAX_COMPONENTS>* m_componentArray;
-		EntityMap m_entityMap;
+		SparseSet m_entityMap;
 		ComponentInstance m_newInstance = 0;
 
 	public:
@@ -27,37 +27,37 @@ namespace ECS {
 			free(m_componentArray);
 		}
 
-		void addComponent(Entity& e, ComponentType&& c) {
+		void AddComponent(Entity& e, ComponentType&& c) {
 			m_componentArray->at(m_newInstance) = std::forward<ComponentType>(c);
-			m_entityMap.add(e, m_newInstance);
+			m_entityMap.Add(e, m_newInstance);
 
 			++m_newInstance;
 		}
 
-		void removeComponent(const Entity& e) {
-			ComponentInstance instance = m_entityMap.getInstance(e);
+		void RemoveComponent(const Entity& e) {
+			ComponentInstance instance = m_entityMap.GetInstance(e);
 			ComponentInstance lastInstance = m_newInstance - 1;
-			Entity lastEntity = m_entityMap.getEntity(lastInstance);
+			Entity lastEntity = m_entityMap.GetEntity(lastInstance);
 
 //			m_entityMap.remove(e);
 
 			if (instance != lastInstance) {
 				m_componentArray->at(instance) = m_componentArray->at(lastInstance);
-				m_entityMap.update(lastEntity, instance);
+				m_entityMap.Update(lastEntity, instance);
 			}
 
 			--m_newInstance;
 		}
 
-		ComponentType* getComponent(const Entity& e) {
-			return &m_componentArray->at(m_entityMap.getInstance(e));
+		ComponentType* GetComponent(const Entity& e) {
+			return &m_componentArray->at(m_entityMap.GetInstance(e));
 		}
 
 		void OnDestroyEntity(Entity& e) override {
-			removeComponent(e);
+			RemoveComponent(e);
 		}
 
-		void iterateAll(const std::function<void(ComponentType* c)> lambda) {
+		void IterateAll(const std::function<void(ComponentType* c)> lambda) {
 			for (int i = 0; i < m_newInstance; ++i) {
 				lambda(&m_componentArray->at(i));
 			}

@@ -5,28 +5,28 @@
 #include "ECS/ECS_def.h"
 
 namespace ECS {
-	inline EntityID getEntityID() {
-		static EntityID entityID = 0;
+	inline EntityID GetEntityID() {
+		static EntityID entityID = 1;
 		return entityID++;
 	}
 
-	inline ComponentTypeID getComponentTypeID() {
+	inline ComponentTypeID GetComponentTypeID() {
 		static ComponentTypeID componentID = 0;
 		return componentID++;
 	}
 
-	template <typename T> inline ComponentTypeID getComponentTypeID() noexcept {
-		static ComponentTypeID typeID = getComponentTypeID();
+	template <typename T> inline ComponentTypeID GetComponentTypeID() noexcept {
+		static ComponentTypeID typeID = GetComponentTypeID();
 		return typeID;
 	}
 
-	inline EventTypeID getEventTypeID() {
+	inline EventTypeID GetEventTypeID() {
 		static EventTypeID eventID = 0;
 		return eventID++;
 	}
 
-	template <typename T> inline EventTypeID getEventTypeID() noexcept {
-		static EventTypeID typeID = getEventTypeID();
+	template <typename T> inline EventTypeID GetEventTypeID() noexcept {
+		static EventTypeID typeID = GetEventTypeID();
 		return typeID;
 	}
 }

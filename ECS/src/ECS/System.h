@@ -7,34 +7,34 @@
 #include "ECS/EventHandler.h"
 
 namespace ECS {
-	class Scene;
+	class ECS;
 
 	class System {
 	protected:
 		std::vector<Entity> m_entityArray;
 
 	public:
-		Scene* m_parentScene;
+		ECS* m_parentScene;
 		EventHandler* m_eventHandler;
 		ComponentFamily m_requiredComponent;
 
 	public:
 		virtual ~System() {}
 
-		virtual void init() = 0;
+		virtual void Init() = 0;
 
-		virtual void update(float dt) = 0;
+		virtual void Update(float dt) = 0;
 
-		virtual void draw() = 0;
+		virtual void Draw() = 0;
 
-		void addEntity(Entity& e) {
+		void AddEntity(Entity& e) {
 			m_entityArray.emplace_back(e);
 		}
 
-		void removeEntity(Entity& e) {
+		void RemoveEntity(Entity& e) {
 			for (auto itr = m_entityArray.begin(); itr != m_entityArray.end(); ++itr) {
 				Entity e_itr = *itr;
-				if (e_itr.GetID() == e.GetID()) {
+				if (e_itr == e) {
 					m_entityArray.erase(itr);
 					return;
 				}

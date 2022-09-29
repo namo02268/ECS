@@ -1,38 +1,35 @@
 ﻿#include <iostream>
 #include <bitset>
 
-#include "ECS/Scene.h"
+#include "ECS/ECS.h"
 #include "Components/Transform.h"
+#include "Components/Relationship.h"
+
 #include "Systems/Systems.h"
 #include "ECS/EventHandler.h"
 
-using namespace ECS;
 
 int main() {
-	Scene* scene = new Scene();
+	ECS::ECS* scene = new ECS::ECS();
 
-	auto e1 = scene->createEntity();
-	auto e2 = scene->createEntity();
-	auto e3 = scene->createEntity();
+	auto transformSystem = std::make_unique<ECS::TransformSystem>();
+	scene->AddSystem(std::move(transformSystem));
 
-	scene->addComponent(e1, TransformComponent(10, 10));
-	scene->addComponent(e2, TransformComponent(10, 10));
-	scene->addComponent(e3, TransformComponent(10, 10));
+	auto parent = scene->CreateEntity();
+	scene->AddComponent<ECS::TransformComponent>(parent, ECS::TransformComponent(10.0, 10.0));
 
-	std::cout << scene->getComponent<TransformComponent>(e1) << std::endl;
-	std::cout << scene->getComponent<TransformComponent>(e2) << std::endl;
-	std::cout << scene->getComponent<TransformComponent>(e3) << std::endl;
+	for (int i = 0; i < 50000; ++i) {
+		auto child = scene->CreateEntity();
+		scene->GetComponent<ECS::Relationship>(child)->parent = parent;
+		scene->AddComponent<ECS::TransformComponent>(child, ECS::TransformComponent(1.0, 1.0));
+	}
 
-	scene->destroyEntity(e1);
-	auto e4 = scene->createEntity();
-	scene->addComponent(e4, TransformComponent(10, 10));
+	std::cout << scene->GetComponent<ECS::TransformComponent>(2)->x << std::endl;
 
-	std::cout << scene->getComponent<TransformComponent>(e1) << std::endl;
-	std::cout << scene->getComponent<TransformComponent>(e2) << std::endl;
-	std::cout << scene->getComponent<TransformComponent>(e4) << std::endl;
+	scene->Init();
+	scene->Update(1.0f);
 
-	scene->init();
-	scene->update(1.0);
+	std::cout << scene->GetComponent<ECS::TransformComponent>(2)->x << std::endl;
 
 	delete scene;
 }
