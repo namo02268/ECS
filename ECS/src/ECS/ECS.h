@@ -138,6 +138,8 @@ namespace ECS
 			return static_cast<ComponentManager<ComponentType>&>(*m_componentManagers[family]).GetComponent(e);
 		}
 
+		//TODO : TryGet
+
 		template<typename ComponentType>
 		void IterateAll(const std::function<void(ComponentType* c)> lambda) {
 			auto family = GetComponentTypeID<ComponentType>();
