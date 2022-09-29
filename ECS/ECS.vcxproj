@@ -143,6 +143,7 @@
     <ClCompile Include="example.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\Relationship.h" />
     <ClInclude Include="src\Components\Transform.h" />
     <ClInclude Include="src\ECS\Component.h" />
     <ClInclude Include="src\ECS\ComponentManager.h" />
