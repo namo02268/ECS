@@ -12,6 +12,7 @@ namespace ECS {
 		std::array<EntityID, MAX_COMPONENTS> m_dense;
 
 	public:
+		SparseSet() = default;
 		~SparseSet() = default;
 
 		Entity GetEntity(const ComponentInstance i) const { return m_dense[i]; }

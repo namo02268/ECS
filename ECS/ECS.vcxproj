@@ -116,6 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,6 +151,7 @@
     <ClInclude Include="src\ECS\ECS_def.h" />
     <ClInclude Include="src\ECS\Entity.h" />
     <ClInclude Include="src\ECS\EntityManager.h" />
+    <ClInclude Include="src\ECS\Pool.h" />
     <ClInclude Include="src\ECS\SparseSet.h" />
     <ClInclude Include="src\ECS\EventHandler.h" />
     <ClInclude Include="src\ECS\IdGenerator.h" />
