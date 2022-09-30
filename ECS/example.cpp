@@ -1,5 +1,4 @@
 ﻿#include <iostream>
-#include <bitset>
 
 #include "ECS/ECS.h"
 #include "Components/Transform.h"

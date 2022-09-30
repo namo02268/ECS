@@ -104,7 +104,7 @@ namespace ECS
 			auto family = GetComponentTypeID<ComponentType>();
 			auto id = e;
 			if (!m_componentMask[id][family]) {
-				m_componentMask[id][family] = true;
+				m_componentMask[id].set(family);
 				// if the component manager didn't exists
 				if (!m_componentFamily[family]) {
 					m_componentManagers[family] = std::make_unique<ComponentManager<ComponentType>>();
