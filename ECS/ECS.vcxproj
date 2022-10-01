@@ -144,8 +144,7 @@
     <ClCompile Include="example.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Components\Relationship.h" />
-    <ClInclude Include="src\Components\Transform.h" />
+    <ClInclude Include="src\ECS\Archetype.h" />
     <ClInclude Include="src\ECS\Component.h" />
     <ClInclude Include="src\ECS\ComponentManager.h" />
     <ClInclude Include="src\ECS\ECS_def.h" />
@@ -153,11 +152,8 @@
     <ClInclude Include="src\ECS\EntityManager.h" />
     <ClInclude Include="src\ECS\Pool.h" />
     <ClInclude Include="src\ECS\SparseSet.h" />
-    <ClInclude Include="src\ECS\EventHandler.h" />
     <ClInclude Include="src\ECS\IdGenerator.h" />
     <ClInclude Include="src\ECS\ECS.h" />
-    <ClInclude Include="src\ECS\System.h" />
-    <ClInclude Include="src\Systems\Systems.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

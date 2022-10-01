@@ -6,10 +6,13 @@
 namespace ECS {
 	class EntityManager {
 	public:
+		EntityManager() = default;
 		~EntityManager() = default;
 
-		// TODO : When the ID is greater than MAX_ENTITIES
-		Entity CreateEntity() { return Entity(GetEntityID()); }
+		Entity CreateEntity() {
+			return Entity(GetEntityID());
+		}
+
 		void DestroyEnitity(Entity e) {}
 	};
 }

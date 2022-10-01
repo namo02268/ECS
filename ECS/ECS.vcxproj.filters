@@ -44,25 +44,13 @@
     <ClInclude Include="src\ECS\SparseSet.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\System.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\ECS_def.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\Systems\Systems.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ECS\EventHandler.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Components\Transform.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Components\Relationship.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="src\ECS\Pool.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\Archetype.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,14 +4,15 @@
 #include <cstdint>
 
 namespace ECS {
-	using EntityID = std::int32_t;
-	using ComponentTypeID = std::int32_t;
-	using ComponentInstance = std::int32_t;
-	using EventTypeID = std::int32_t;
+	using ID = std::int32_t;
+	using EntityID = ID;
+	using ComponentTypeID = ID;
+	using ComponentInstance = ID;
+	using EventTypeID = ID;
 
-	constexpr std::int32_t MAX_ENTITIES = 100000;
+	constexpr std::int32_t MAX_ENTITIES = 1000;
 	constexpr std::int32_t MAX_COMPONENTS_FAMILY = 32;
-	constexpr std::int32_t MAX_COMPONENTS = 100000;
+	constexpr std::int32_t MAX_COMPONENTS = 1000;
 
 	using ComponentFamily = std::bitset<MAX_COMPONENTS_FAMILY>;
 }
