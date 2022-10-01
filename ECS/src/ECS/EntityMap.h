@@ -38,7 +38,7 @@ namespace ECS {
 		~EntityMap() = default;
 
 		Entity getEntity(ComponentInstance i) { return m_instanceToEntity[i]; }
-		ComponentInstance getInstance(Entity e) { return m_entityToInstance[e.GetID()]; }
+		ComponentInstance getInstance(Entity e) { return m_entityToInstance.at(e.GetID()); } // []‚æ‚èat()‚Ì•û‚ª‘¬‚¢H
 
 		void add(Entity& e, ComponentInstance i) {
 			m_entityToInstance.insert({ e.GetID(), i });
