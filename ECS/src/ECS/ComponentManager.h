@@ -4,6 +4,7 @@
 
 #include "ECS/SparseSet.h"
 #include "ECS/Pool.h"
+#include "ECS/ECS_def.h"
 
 namespace ECS {
 	class IComponentManager {
@@ -16,8 +17,8 @@ namespace ECS {
 	class ComponentManager : public IComponentManager {
 	private:
 		Pool<ComponentType, MAX_COMPONENTS> m_pool;
-		SparseSet m_sparseSet;
-		std::size_t m_size;
+		SparseSet<ID> m_sparseSet{ MAX_ENTITIES, MAX_COMPONENTS };
+		std::size_t m_size = 0;
 
 	public:
 		ComponentManager() = default;
@@ -32,28 +33,28 @@ namespace ECS {
 		ComponentType* Add(EntityID e, Args && ... args) {
 			auto ptr = m_pool.Get(m_size);
 			::new(ptr) ComponentType(std::forward<Args>(args) ...);
-			m_sparseSet.Add(e, m_size);
+			m_sparseSet.Insert(e, m_size);
 			m_size++;
 			return ptr;
 		}
 
 		inline ComponentType* Get(EntityID e) {
-			assert(m_size > m_sparseSet.GetInstance(e) && "n must be smaller than current size");
-			return m_pool.Get(m_sparseSet.GetInstance(e));
+			assert(m_size > m_sparseSet.GetDense(e) && "n must be smaller than current size");
+			return m_pool.Get(m_sparseSet.GetDense(e));
 		}
 
 		void Remove(EntityID e) {
-			auto instance = m_sparseSet.GetInstance(e);
+			auto instance = m_sparseSet.GetDense(e);
 			auto lastInstance = m_size - 1;
-			auto lastEntityID = m_sparseSet.GetEntity(lastInstance);
+			auto lastEntityID = m_sparseSet.GetSparse(lastInstance);
 
 			assert(m_size > instance && "n must be smaller than current size");
 
 			m_pool.Destroy(e);
 
 			if (instance != lastInstance) {
-				*(m_pool.Get(instance)) = *(m_pool.Get(lastInstance));
-				m_sparseSet.Update(lastEntityID, instance);
+				this->Move(lastInstance, instance);
+				m_sparseSet.Insert(lastEntityID, instance);
 			}
 			m_size--;
 		}
@@ -63,6 +64,11 @@ namespace ECS {
 		}
 
 		void IterateAll(const std::function<void(ComponentType* c)> lambda) {
+		}
+
+	private:
+		void Move(std::size_t from, std::size_t to) {
+			*(m_pool.Get(to)) = *(m_pool.Get(from));
 		}
 	};
 }

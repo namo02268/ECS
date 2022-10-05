@@ -2,6 +2,7 @@
 
 #include "ECS/ECS.h"
 #include "ECS/Pool.h"
+#include "ECS/SparseSet.h"
 
 struct Position {
 	Position(float x, float y, float z) : x(x), y(x), z(z) { std::cout << "This is Construct" << std::endl; }
@@ -31,17 +32,17 @@ int main() {
 	c_manager.Add(entity4.GetID(), 4, 4, 4);
 
 	std::cout << "------------Get Test------------" << std::endl;
-	std::cout << c_manager.Get(entity1.GetID())->x << std::endl;;
-	std::cout << c_manager.Get(entity2.GetID())->x << std::endl;;
-	std::cout << c_manager.Get(entity3.GetID())->x << std::endl;;
-	std::cout << c_manager.Get(entity4.GetID())->x << std::endl;;
+	std::cout << c_manager.Get(entity1.GetID())->x << std::endl;
+	std::cout << c_manager.Get(entity2.GetID())->x << std::endl;
+	std::cout << c_manager.Get(entity3.GetID())->x << std::endl;
+	std::cout << c_manager.Get(entity4.GetID())->x << std::endl;
 
 	std::cout << "------------Remove Test------------" << std::endl;
 	c_manager.Remove(entity2.GetID());
 	c_manager.Add(entity2.GetID(), 5, 5, 5);
-	std::cout << c_manager.Get(entity1.GetID())->x << std::endl;;
-	std::cout << c_manager.Get(entity2.GetID())->x << std::endl;;
-	std::cout << c_manager.Get(entity3.GetID())->x << std::endl;;
-	std::cout << c_manager.Get(entity4.GetID())->x << std::endl;;
+	std::cout << c_manager.Get(entity1.GetID())->x << std::endl;
+	std::cout << c_manager.Get(entity2.GetID())->x << std::endl;
+	std::cout << c_manager.Get(entity3.GetID())->x << std::endl;
+	std::cout << c_manager.Get(entity4.GetID())->x << std::endl;
 }
 
