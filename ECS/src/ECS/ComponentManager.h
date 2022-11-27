@@ -29,6 +29,31 @@ namespace ECS {
 				m_pool.Destroy(i);
 		}
 
+		struct Component_Iterator {
+		public:
+			using iterator_category = std::forward_iterator_tag;
+			using difference_type = std::ptrdiff_t;
+			using value_type = ComponentType;
+			using pointer = ComponentType*;
+			using reference = ComponentType&;
+
+			Component_Iterator(pointer ptr) : m_ptr(ptr) {}
+
+			reference operator*() const { return *m_ptr; }
+			pointer operator->() { return m_ptr; }
+			Component_Iterator& operator++() { m_ptr++; return *this; }
+			Component_Iterator operator++(int) { Component_Iterator tmp = *this; ++(*this); return tmp; }
+			friend bool operator==(const Component_Iterator& a, const Component_Iterator& b) { return a.m_ptr == b.m_ptr; }
+			friend bool operator!=(const Component_Iterator& a, const Component_Iterator& b) { return a.m_ptr != b.m_ptr; }
+		private:
+			pointer m_ptr;
+		};
+
+		Component_Iterator begin() { return Component_Iterator(m_pool.Get(0)); }
+		Component_Iterator end() { return Component_Iterator(m_pool.Get(m_size)); }
+
+
+
 		template<typename ... Args>
 		ComponentType* Add(EntityID e, Args && ... args) {
 			auto ptr = m_pool.Get(m_size);

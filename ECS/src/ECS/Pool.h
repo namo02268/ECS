@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include <iterator>
+
 namespace ECS {
 	template<typename T, std::size_t chunkSize = 1024>
 	class Pool {
