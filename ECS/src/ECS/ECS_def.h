@@ -6,7 +6,7 @@
 namespace ECS {
 	using ID = std::int32_t;
 	using EntityID = ID;
-	using ComponentTypeID = ID;
+	using FamilyID = ID;
 	using ComponentInstance = ID;
 	using EventTypeID = ID;
 	using ArcheID = ID;

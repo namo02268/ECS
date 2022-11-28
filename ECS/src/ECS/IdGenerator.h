@@ -5,19 +5,18 @@
 #include "ECS/ECS_def.h"
 
 namespace ECS {
+	class Family {
+	private:
+		static inline FamilyID m_identifier = 0;
+
+	public:
+		template<typename>
+		static inline const FamilyID Type = m_identifier++;
+	};
+
 	inline EntityID GetEntityID() {
 		static EntityID entityID = 1;
 		return entityID++;
-	}
-
-	inline ComponentTypeID GetComponentTypeID() {
-		static ComponentTypeID componentID = 0;
-		return componentID++;
-	}
-
-	template <typename T> inline ComponentTypeID GetComponentTypeID() noexcept {
-		static ComponentTypeID typeID = GetComponentTypeID();
-		return typeID;
 	}
 
 	inline EventTypeID GetEventTypeID() {

@@ -12,7 +12,7 @@ namespace ECS {
 		ArcheID GetID() const { return m_id; }
 		ComponentFamily GetFamily() const { return m_family; }
 
-		void AddComponent(const ComponentTypeID family) { m_family.set(family); }
-		void RemoveComponent(const ComponentTypeID family) { m_family.reset(family); }
+		void AddComponent(const FamilyID family) { m_family.set(family); }
+		void RemoveComponent(const FamilyID family) { m_family.reset(family); }
 	};
 }

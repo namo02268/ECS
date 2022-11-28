@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <algorithm>
 
 #include "ECS/ECS.h"
 #include "ECS/Pool.h"
@@ -18,6 +19,11 @@ struct Mesh {
 };
 
 int main() {
+	uint32_t families = 1;
+	std::cout << ECS::Family::Type<Position> << std::endl;
+	std::cout << ECS::Family::Type<Mesh> << std::endl;
+
+	/*
 	ECS::EntityManager e_manager;
 	ECS::ComponentManager<Position> c_manager;
 
@@ -62,5 +68,17 @@ int main() {
 	for (auto& c : c_manager) {
 		std::cout << c.x << std::endl;
 	}
+
+	std::cout << "------------Sort Test------------" << std::endl;
+	std::sort(c_manager.begin(), c_manager.end(), [](const auto& lhs, const auto& rhs)
+		{
+			return lhs.x < rhs.x;
+		});
+
+	std::cout << "------------Iterator Test------------" << std::endl;
+	for (auto& c : c_manager) {
+		std::cout << c.x << std::endl;
+	}
+	*/
 }
 

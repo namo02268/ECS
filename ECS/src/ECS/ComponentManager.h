@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <unordered_map>
 
 #include "ECS/SparseSet.h"
 #include "ECS/Pool.h"
@@ -19,6 +20,7 @@ namespace ECS {
 		Pool<ComponentType, MAX_COMPONENTS> m_pool;
 		SparseSet<ID> m_sparseSet{ MAX_ENTITIES, MAX_COMPONENTS };
 		std::size_t m_size = 0;
+		std::unordered_map<ArcheID, void*> m_archMap;
 
 	public:
 		ComponentManager() = default;
@@ -41,8 +43,25 @@ namespace ECS {
 
 			reference operator*() const { return *m_ptr; }
 			pointer operator->() { return m_ptr; }
-			Component_Iterator& operator++() { m_ptr++; return *this; }
-			Component_Iterator operator++(int) { Component_Iterator tmp = *this; ++(*this); return tmp; }
+
+			auto operator++() { m_ptr++; return *this; }
+			auto operator++(int) { auto tmp = *this; ++(*this); return tmp; }
+			auto operator--() { m_ptr--; return *this; }
+			auto operator--(int) { auto tmp = *this; --(*this); return tmp; }
+
+			auto operator+=(const difference_type offset) { m_ptr += offset; return *this; }
+			auto operator+(const difference_type offset) const { auto tmp = *this; return tmp += offset; }
+			auto operator-=(const difference_type offset) { return *this += -offset; }
+			auto operator-(const difference_type offset)const { auto tmp = *this; return tmp -= offset; }
+			auto operator-(const Component_Iterator& right) const { return m_ptr - right.m_ptr; }
+
+			auto operator[](const difference_type offset) const { return *(*this + offset); }
+
+			bool operator<(const Component_Iterator& right) const { return m_ptr < right.m_ptr; }
+			bool operator>(const Component_Iterator& right) const { return right < *this; }
+			bool operator<=(const Component_Iterator& right) const { return !(right < *this); }
+			bool operator>=(const Component_Iterator& right) const { return !(*this < right); }
+
 			friend bool operator==(const Component_Iterator& a, const Component_Iterator& b) { return a.m_ptr == b.m_ptr; }
 			friend bool operator!=(const Component_Iterator& a, const Component_Iterator& b) { return a.m_ptr != b.m_ptr; }
 		private:
@@ -51,8 +70,6 @@ namespace ECS {
 
 		Component_Iterator begin() { return Component_Iterator(m_pool.Get(0)); }
 		Component_Iterator end() { return Component_Iterator(m_pool.Get(m_size)); }
-
-
 
 		template<typename ... Args>
 		ComponentType* Add(EntityID e, Args && ... args) {
@@ -63,7 +80,11 @@ namespace ECS {
 			return ptr;
 		}
 
-		inline ComponentType* Get(EntityID e) {
+		void SetArchType(EntityID e) {
+
+		}
+
+		ComponentType* Get(EntityID e) {
 			assert(m_size > m_sparseSet.GetDense(e) && "n must be smaller than current size");
 			return m_pool.Get(m_sparseSet.GetDense(e));
 		}
