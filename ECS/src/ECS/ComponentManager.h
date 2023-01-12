@@ -33,7 +33,7 @@ namespace ECS {
 
 		struct Component_Iterator {
 		public:
-			using iterator_category = std::forward_iterator_tag;
+			using iterator_category = std::random_access_iterator_tag;
 			using difference_type = std::ptrdiff_t;
 			using value_type = ComponentType;
 			using pointer = ComponentType*;

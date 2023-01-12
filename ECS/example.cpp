@@ -19,11 +19,6 @@ struct Mesh {
 };
 
 int main() {
-	uint32_t families = 1;
-	std::cout << ECS::Family::Type<Position> << std::endl;
-	std::cout << ECS::Family::Type<Mesh> << std::endl;
-
-	/*
 	ECS::EntityManager e_manager;
 	ECS::ComponentManager<Position> c_manager;
 
@@ -35,9 +30,6 @@ int main() {
 	std::cout << entity2.GetID() << std::endl;
 	std::cout << entity3.GetID() << std::endl;
 	std::cout << entity4.GetID() << std::endl;
-
-	std::cout << "------------Size------------" << std::endl;
-	std::cout << sizeof(Position) << std::endl;
 
 	std::cout << "------------Add Test------------" << std::endl;
 	c_manager.Add(entity1.GetID(), 1, 1, 1);
@@ -79,6 +71,5 @@ int main() {
 	for (auto& c : c_manager) {
 		std::cout << c.x << std::endl;
 	}
-	*/
 }
 

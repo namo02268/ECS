@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cassert>
+#include <type_traits>
 
 namespace ECS {
 	template<typename T>
@@ -10,6 +11,7 @@ namespace ECS {
 		std::vector<T> m_sparse;
 		std::vector<T> m_dense;
 
+		std::size_t m_size;
 		std::size_t m_sparseMax;
 		std::size_t m_denseMax;
 
@@ -20,8 +22,21 @@ namespace ECS {
 			m_sparse.resize(m_sparseMax, 0);
 			m_dense.resize(m_denseMax, 0);
 		}
-
+		SparseSet(const SparseSet&) = delete;
+		SparseSet& operator=(const SparseSet&) = delete;
 		~SparseSet() = default;
+
+		using iterator = typename std::vector<T>::const_iterator;
+		using const_iterator = typename std::vector<T>::const_iterator;
+
+		iterator begin() { return m_dense.begin(); }
+		const_iterator begin() const { return m_dense.begin(); }
+		iterator end() { return m_dense.begin() + m_size; }
+		const_iterator end() const { return m_dense.begin() + m_size; }
+
+		size_t Size() const { return m_size; }
+		size_t SparseMax() const { return m_sparseMase; }
+		size_t DenseMax() const { return m_denseMax; }
 
 		inline T GetSparse(const std::size_t dense) const {
 			assert(m_denseMax > dense && "dense must be smaller than dense max");
